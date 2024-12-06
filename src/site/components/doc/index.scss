@@ -93,7 +93,9 @@
   color: var(--doc-primary);
   text-decoration: none;
   opacity: 0;
-  transition: color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+  transition:
+    color 0.15s ease-in-out,
+    opacity 0.15s ease-in-out;
 
   &:focus,
   &:hover,

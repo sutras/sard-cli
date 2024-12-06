@@ -1,6 +1,10 @@
 <template>
   <template v-if="sidebarRoutes.length > 0">
-    <Sideslip side="left" :title="sideslipTitle" v-model:visible="innerVisible">
+    <DocSideslip
+      side="left"
+      :title="sideslipTitle"
+      v-model:visible="innerVisible"
+    >
       <div
         :class="[
           'doc-sider',
@@ -10,118 +14,128 @@
         ]"
       >
         <nav class="doc-sidenav">
-          <Items></Items>
+          <component :is="SiderItems"></component>
         </nav>
       </div>
-    </Sideslip>
+    </DocSideslip>
   </template>
 </template>
 
-<script setup lang="ts">
-import { computed, h, onMounted, VNode, watch } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, h, onMounted, VNode, watch } from 'vue'
 import { useRoute, RouterLink, RouteRecordRaw } from 'vue-router'
-import Sideslip from './Sideslip.vue'
+import DocSideslip from './Sideslip.vue'
 
-const props = defineProps<{
-  visible?: boolean
-}>()
-
-const emit = defineEmits<{
-  (e: 'update:visible', visible: boolean): any
-}>()
-
-const innerVisible = computed({
-  get() {
-    return props.visible
+export default defineComponent({
+  components: {
+    DocSideslip,
   },
-  set(visible) {
-    emit('update:visible', visible)
+  props: {
+    visible: Boolean,
   },
-})
-
-const currentRoute = useRoute()
-
-const sidebarRoutes = computed(() => {
-  return currentRoute.matched[1]?.children ?? []
-})
-
-const sideslipTitle = computed(() => {
-  return (currentRoute.matched[1]?.meta?.title || '') as string
-})
-
-const renderLink = (item: RouteRecordRaw) => {
-  return h(
-    RouterLink,
-    {
-      key: item.path,
-      class: 'doc-sidenav-link',
-      exactActiveClass: 'active',
-      to: item.path,
-      onClick() {
-        innerVisible.value = false
+  emits: ['update:visible'],
+  setup(props, { emit }) {
+    const innerVisible = computed({
+      get() {
+        return props.visible
       },
-    },
-    () =>
-      h(
-        'span',
-        {
-          class: 'doc-sidenav-link-title',
-        },
-        item.meta!.title as string,
-      ),
-  )
-}
+      set(visible) {
+        emit('update:visible', visible)
+      },
+    })
 
-const renderItems = (items: RouteRecordRaw[]): VNode[] => {
-  return items.map<VNode>((item, i): any => {
-    if (item.meta!.type === 'group') {
-      return [
-        h(
-          'div',
-          {
-            key: i,
-            class: 'doc-sidenav-title',
+    const currentRoute = useRoute()
+
+    const sidebarRoutes = computed(() => {
+      return currentRoute.matched[1]?.children ?? []
+    })
+
+    const sideslipTitle = computed(() => {
+      return (currentRoute.matched[1]?.meta?.title || '') as string
+    })
+
+    const renderLink = (item: RouteRecordRaw) => {
+      return h(
+        RouterLink,
+        {
+          key: item.path,
+          class: 'doc-sidenav-link',
+          exactActiveClass: 'active',
+          to: item.path,
+          onClick() {
+            innerVisible.value = false
           },
-          item.meta!.title as string,
-        ),
-        Array.isArray(item.children) && item.children.length > 0
-          ? renderItems(item.children)
-          : null,
-      ]
+        },
+        () =>
+          h(
+            'span',
+            {
+              class: 'doc-sidenav-link-title',
+            },
+            item.meta!.title as string,
+          ),
+      )
     }
 
-    return renderLink(item)
-  })
-}
+    const renderItems = (items: RouteRecordRaw[]): VNode[] => {
+      return items.map<VNode>((item, i): any => {
+        if (item.meta!.type === 'group') {
+          return [
+            h(
+              'div',
+              {
+                key: i,
+                class: 'doc-sidenav-title',
+              },
+              item.meta!.title as string,
+            ),
+            Array.isArray(item.children) && item.children.length > 0
+              ? renderItems(item.children)
+              : null,
+          ]
+        }
 
-function Items() {
-  return sidebarRoutes.value.length > 0
-    ? renderItems(sidebarRoutes.value)
-    : null
-}
+        return renderLink(item)
+      })
+    }
 
-function scrollIntoView() {
-  const activeLink = document.querySelector('.doc-sidenav-link.active')
-  if (activeLink) {
-    activeLink.scrollIntoView({
-      block: 'nearest',
-      behavior: 'instant',
-    })
-  }
-}
+    function SiderItems() {
+      return sidebarRoutes.value.length > 0
+        ? renderItems(sidebarRoutes.value)
+        : null
+    }
 
-onMounted(() => {
-  scrollIntoView()
-})
+    function scrollIntoView() {
+      const activeLink = document.querySelector('.doc-sidenav-link.active')
+      if (activeLink) {
+        activeLink.scrollIntoView({
+          block: 'nearest',
+          behavior: 'instant',
+        })
+      }
+    }
 
-watch(
-  () => currentRoute.path,
-  () => {
-    setTimeout(() => {
+    onMounted(() => {
       scrollIntoView()
-    }, 150)
+    })
+
+    watch(
+      () => currentRoute.path,
+      () => {
+        setTimeout(() => {
+          scrollIntoView()
+        }, 150)
+      },
+    )
+
+    return {
+      SiderItems,
+      sidebarRoutes,
+      sideslipTitle,
+      innerVisible,
+    }
   },
-)
+})
 </script>
 
 <style lang="scss">

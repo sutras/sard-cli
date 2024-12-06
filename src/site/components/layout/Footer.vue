@@ -23,12 +23,21 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { inject } from 'vue'
+<script lang="ts">
+import { defineComponent, inject } from 'vue'
 import type { MergedConfig } from '../../../node/config-type'
 
-const { site, git } = inject<MergedConfig>('sardConfig')!
-const primaryGit = git?.[0]
+export default defineComponent({
+  setup() {
+    const { site, git } = inject<MergedConfig>('sardConfig')!
+    const primaryGit = git?.[0]
+
+    return {
+      site,
+      primaryGit,
+    }
+  },
+})
 </script>
 
 <style lang="scss">

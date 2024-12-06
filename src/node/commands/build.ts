@@ -85,7 +85,7 @@ async function compileTsAndGenerateVueType() {
     })
 
     child.stdout!.on('data', (data) => {
-      console.log(data)
+      consola.log(data)
     })
   })
 
@@ -286,7 +286,6 @@ export async function build() {
       consola.success(`[${index + 1}/${steps.length}] ${msg}`)
     }
   } catch (err) {
-    consola.error('构建失败')
-    console.log(err)
+    consola.error(err)
   }
 }

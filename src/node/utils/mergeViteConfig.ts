@@ -16,12 +16,14 @@ import {
   SERVER_PREVIEW_PORT,
   SITE_DIR,
 } from './constants.js'
-import { deepMerge } from './deepMerge.js'
 import { SARD_CONFIG_FILENAME } from '../config.js'
 import { sardConfig } from '../getSardConfig.js'
+import { type InlineConfig } from 'vite'
 
-export function mergeViteConfig(options: VitePluginRestartOptions) {
-  return deepMerge({
+export function mergeViteConfig(
+  options: VitePluginRestartOptions,
+): InlineConfig {
+  return {
     configFile: false,
     plugins: [
       VitePluginIndexHtml(),
@@ -49,6 +51,7 @@ export function mergeViteConfig(options: VitePluginRestartOptions) {
     build: {
       outDir: relative(SITE_DIR, resolve(CWD, sardConfig.site.outDir)),
       emptyOutDir: true,
+      minify: true,
     },
     preview: {
       port: SERVER_PREVIEW_PORT,
@@ -63,7 +66,7 @@ export function mergeViteConfig(options: VitePluginRestartOptions) {
         plugins: [autoprefixer({})],
       },
     },
-  })
+  }
 }
 
 export default mergeViteConfig

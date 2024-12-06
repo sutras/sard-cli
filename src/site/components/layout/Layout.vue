@@ -11,9 +11,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
-defineProps({
-  row: Boolean,
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  props: {
+    row: Boolean,
+  },
 })
 </script>
 

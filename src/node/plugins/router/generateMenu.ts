@@ -51,7 +51,7 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
         ...mergedNav,
         order: mergedNav.order ?? 0,
         children: items,
-        path: '',
+        path: `/${segments[0]}`,
         id: ++count,
         file: '@@/components/layout/Trunking.vue',
       }
@@ -129,8 +129,8 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
         if (obj.children) {
           obj.children = recurseSort(obj.children)
           const path = obj.children[0]?.path
-          if (path) {
-            obj.path = path
+          if (!obj.redirect && path) {
+            obj.redirect = path
           }
         }
         return obj

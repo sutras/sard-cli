@@ -10,13 +10,12 @@ export async function buildSite() {
     consola.success('已完成文档的构建\n\n')
     consola.info('开始构建案例...')
     child.stdout!.on('data', (data) => {
-      console.log(data)
+      consola.log(data)
     })
     child.on('close', () => {
       consola.success('构建完成')
     })
   } catch (err) {
-    consola.error('构建失败')
-    console.log(err)
+    consola.error(err)
   }
 }

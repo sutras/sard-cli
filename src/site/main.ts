@@ -10,6 +10,7 @@ const app = createApp(App)
 
 // # router
 import router from 'virtual:router'
+
 app.use(router)
 
 // # nprogress

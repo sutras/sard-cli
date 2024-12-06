@@ -94,6 +94,10 @@ export interface UserConfig {
      */
     repo: string
     /**
+     * 文档仓库地址
+     */
+    docsRepo: string
+    /**
      * 仓库url
      */
     url: string

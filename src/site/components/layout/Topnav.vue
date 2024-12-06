@@ -28,33 +28,44 @@
     </template>
     <li class="doc-topnav-divide"></li>
     <li class="doc-topnav-item">
-      <Theme class="doc-topnav-theme">
+      <DocTheme class="doc-topnav-theme">
         <span class="doc-topnav-icon-text">切换主题</span>
-      </Theme>
+      </DocTheme>
     </li>
   </ul>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import Theme from './Theme.vue'
-import { inject } from 'vue'
+import DocTheme from './Theme.vue'
+import { defineComponent, inject } from 'vue'
 import type { MergedConfig } from '../../../node/config-type'
 
-const emit = defineEmits<{
-  (e: 'link-click'): void
-}>()
+export default defineComponent({
+  components: {
+    DocTheme,
+  },
+  emits: ['link-click'],
+  setup(_, { emit }) {
+    const route = useRoute()
+    const router = useRouter()
 
-const route = useRoute()
-const router = useRouter()
+    const { git } = inject<MergedConfig>('sardConfig')!
 
-const { git } = inject<MergedConfig>('sardConfig')!
+    const secondLevelRoutes = router.options.routes[0].children
 
-const secondLevelRoutes = router.options.routes[0].children
+    const getActiveClass = (path: string) => {
+      return path === '/' ? (route.path === '/' ? 'active' : '') : 'active'
+    }
 
-const getActiveClass = (path: string) => {
-  return path === '/' ? (route.path === '/' ? 'active' : '') : 'active'
-}
+    return {
+      emit,
+      git,
+      secondLevelRoutes,
+      getActiveClass,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

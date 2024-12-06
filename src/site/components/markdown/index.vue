@@ -8,14 +8,25 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import useCodeTool from '@@/components/code-tool/useCodeTool'
-import { FrontMatter } from '../../../common-type'
+import { defineComponent } from 'vue'
 
-defineProps<{
-  content: string
-  fm: FrontMatter
-}>()
+export default defineComponent({
+  props: {
+    content: {
+      type: String,
+      required: true,
+    },
+    fm: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup() {
+    useCodeTool()
 
-useCodeTool()
+    return {}
+  },
+})
 </script>

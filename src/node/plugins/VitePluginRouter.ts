@@ -49,14 +49,15 @@ export function VitePluginRouter(): Plugin {
         return RESOLVED_VIRTUAL_ROUTER
       }
     },
+    async buildStart() {
+      baseRoutes = await getRouterConfig()
+    },
     load(id) {
       if (id === RESOLVED_VIRTUAL_ROUTER) {
         return loadRouter(baseRoutes)
       }
     },
     async configureServer(server) {
-      baseRoutes = await getRouterConfig()
-
       server.watcher.on('all', async (eventName, filePath) => {
         if (
           (eventName === 'add' ||

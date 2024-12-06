@@ -4,14 +4,19 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import useTheme from './use/useTheme'
 import useHash from './use/useHash'
 import { channel } from './utils/channel'
+import { defineComponent } from 'vue'
 
-useTheme()
+export default defineComponent({
+  setup() {
+    useTheme()
 
-useHash(`.doc-anchor, .doc-catalog-link`, (id) => {
-  channel.emit('scrollTo', id)
+    useHash(`.doc-anchor, .doc-catalog-link`, (id) => {
+      channel.emit('scrollTo', id)
+    })
+  },
 })
 </script>

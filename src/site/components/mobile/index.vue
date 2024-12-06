@@ -2,7 +2,7 @@
   <div v-if="visible" class="doc-mobile">
     <iframe
       :src="url"
-      ref="iframe"
+      ref="iframeRef"
       class="doc-mobile-iframe"
       frameborder="0"
     ></iframe>
@@ -12,54 +12,65 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, watch, inject } from 'vue'
+<script lang="ts">
+import { ref, computed, watch, inject, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useBuildChannel, channel } from '../../utils/channel'
 import baseUrl from 'virtual:mobile'
 import type { ThemeContext } from '../../use/useTheme'
 
-const context = inject<ThemeContext>('theme')!
+export default defineComponent({
+  setup() {
+    const context = inject<ThemeContext>('theme')!
 
-const url = ref(baseUrl)
+    const url = ref(baseUrl)
 
-function getComponentPathName(path: string) {
-  return path.replace(/^.*\//, '')
-}
+    function getComponentPathName(path: string) {
+      return path.replace(/^.*\//, '')
+    }
 
-const route = useRoute()
+    const route = useRoute()
 
-const visible = computed(() => {
-  return route.matched.some((route) => /\/components\//.test(route.path))
-})
+    const visible = computed(() => {
+      return route.matched.some((route) => /\/components\//.test(route.path))
+    })
 
-const iframe = ref<HTMLIFrameElement>()
+    const iframeRef = ref<HTMLIFrameElement>()
 
-useBuildChannel(iframe)
+    useBuildChannel(iframeRef)
 
-const emitRoute = () => {
-  channel.emit('route', route.path.replace(/^.*\//, ''))
-}
+    const emitRoute = () => {
+      channel.emit('route', route.path.replace(/^.*\//, ''))
+    }
 
-channel.on('loaded', () => {
-  emitRoute()
-  channel.emit('theme', context.theme.value)
-})
+    channel.on('loaded', () => {
+      emitRoute()
+      channel.emit('theme', context.theme.value)
+    })
 
-watch(
-  () => route.path,
-  () => {
-    emitRoute()
+    watch(
+      () => route.path,
+      () => {
+        emitRoute()
+      },
+    )
+
+    const openWindown = () => {
+      window.open(
+        `${baseUrl.replace(/\/$/, '')}/#/pages/components/${getComponentPathName(
+          route.path,
+        )}/index`,
+      )
+    }
+
+    return {
+      url,
+      visible,
+      openWindown,
+      iframeRef,
+    }
   },
-)
-
-const openWindown = () => {
-  window.open(
-    `${baseUrl.replace(/\/$/, '')}/#/pages/components/${getComponentPathName(
-      route.path,
-    )}/index`,
-  )
-}
+})
 </script>
 
 <style lang="scss">

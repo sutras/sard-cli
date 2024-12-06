@@ -10,29 +10,38 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { inject, computed } from 'vue'
+<script lang="ts">
+import { inject, computed, defineComponent } from 'vue'
 import type { ThemeContext, ThemeType } from '../../use/useTheme'
 
-const context = inject<ThemeContext>('theme')
+export default defineComponent({
+  setup() {
+    const context = inject<ThemeContext>('theme')
 
-const mapThemeIcon = {
-  light: 'hsi hsi-sun-fill',
-  dark: 'hsi hsi-moon-stars-fill',
-  auto: 'hsi hsi-circle-half',
-}
+    const mapThemeIcon = {
+      light: 'hsi hsi-sun-fill',
+      dark: 'hsi hsi-moon-stars-fill',
+      auto: 'hsi hsi-circle-half',
+    }
 
-const icon = computed(() => {
-  return mapThemeIcon[context?.theme.value || 'auto']
-})
+    const icon = computed(() => {
+      return mapThemeIcon[context?.theme.value || 'auto']
+    })
 
-const selected = computed({
-  get() {
-    return context?.theme.value
-  },
-  set(value: ThemeType) {
-    if (context) {
-      context.theme.value = value
+    const selected = computed({
+      get() {
+        return context?.theme.value
+      },
+      set(value: ThemeType) {
+        if (context) {
+          context.theme.value = value
+        }
+      },
+    })
+
+    return {
+      icon,
+      selected,
     }
   },
 })

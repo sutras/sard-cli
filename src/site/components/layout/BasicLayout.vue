@@ -1,34 +1,53 @@
 <template>
-  <Layout>
-    <Header @sidebar-toggle="onSidebarToggle"></Header>
-    <Layout row>
-      <Sider v-model:visible="siderVisible"></Sider>
-      <Content>
-        <Main>
+  <DocLayout>
+    <DocHeader @sidebar-toggle="onSidebarToggle"></DocHeader>
+    <DocLayout row>
+      <DocSider v-model:visible="siderVisible"></DocSider>
+      <DocContent>
+        <DocMain>
           <router-view></router-view>
-        </Main>
-        <Footer></Footer>
-      </Content>
-      <Mobile></Mobile>
-      <Catalog></Catalog>
-    </Layout>
-  </Layout>
+        </DocMain>
+        <DocFooter></DocFooter>
+      </DocContent>
+      <DocMobile></DocMobile>
+      <DocCatalog></DocCatalog>
+    </DocLayout>
+  </DocLayout>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import Layout from './Layout.vue'
-import Header from './Header.vue'
-import Sider from './Sider.vue'
-import Main from './Main.vue'
-import Content from './Content.vue'
-import Footer from './Footer.vue'
-import Catalog from '../catalog/index.vue'
-import Mobile from '../mobile/index.vue'
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import DocLayout from './Layout.vue'
+import DocHeader from './Header.vue'
+import DocSider from './Sider.vue'
+import DocMain from './Main.vue'
+import DocContent from './Content.vue'
+import DocFooter from './Footer.vue'
+import DocCatalog from '../catalog/index.vue'
+import DocMobile from '../mobile/index.vue'
 
-const siderVisible = ref(false)
+export default defineComponent({
+  components: {
+    DocLayout,
+    DocHeader,
+    DocSider,
+    DocMain,
+    DocContent,
+    DocFooter,
+    DocCatalog,
+    DocMobile,
+  },
+  setup() {
+    const siderVisible = ref(false)
 
-const onSidebarToggle = () => {
-  siderVisible.value = true
-}
+    const onSidebarToggle = () => {
+      siderVisible.value = true
+    }
+
+    return {
+      siderVisible,
+      onSidebarToggle,
+    }
+  },
+})
 </script>

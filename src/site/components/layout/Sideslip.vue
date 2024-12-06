@@ -1,5 +1,5 @@
 <template>
-  <Backdrop v-model:visible="innerVisible"></Backdrop>
+  <DocBackdrop v-model:visible="innerVisible"></DocBackdrop>
 
   <div
     :class="[
@@ -22,39 +22,44 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
-import Backdrop from './Backdrop.vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
+import DocBackdrop from './Backdrop.vue'
 import { useResize } from '../../use/useResize'
 
-const props = withDefaults(
-  defineProps<{
-    title?: string
-    visible?: boolean
-    side?: 'left' | 'right'
-  }>(),
-  {
-    side: 'left',
+export default defineComponent({
+  components: {
+    DocBackdrop,
   },
-)
-
-const emit = defineEmits<{
-  (e: 'update:visible', visible: boolean): void
-}>()
-
-const innerVisible = computed({
-  get() {
-    return props.visible
+  props: {
+    title: String,
+    visible: Boolean,
+    side: {
+      type: String,
+      default: 'left',
+    },
   },
-  set(visible) {
-    emit('update:visible', visible)
-  },
-})
+  emits: ['update:visible'],
+  setup(props, { emit }) {
+    const innerVisible = computed({
+      get() {
+        return props.visible
+      },
+      set(visible) {
+        emit('update:visible', visible)
+      },
+    })
 
-useResize(() => {
-  if (innerVisible.value && window.innerWidth > 768) {
-    innerVisible.value = false
-  }
+    useResize(() => {
+      if (innerVisible.value && window.innerWidth > 768) {
+        innerVisible.value = false
+      }
+    })
+
+    return {
+      innerVisible,
+    }
+  },
 })
 </script>
 

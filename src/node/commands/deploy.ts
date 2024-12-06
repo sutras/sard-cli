@@ -6,7 +6,7 @@ import { sardConfig } from '../getSardConfig.js'
 interface Remote {
   name: string
   branch: string
-  repo: string
+  docsRepo: string
   success?: () => void
 }
 
@@ -36,18 +36,18 @@ function getRemoteConfigs(remote: string) {
 
 async function doDeploy(config: Remote) {
   return new Promise<void>((resolve, reject) => {
-    consola.start(`[${config.name}] (${config.repo}) 开始部署...`)
+    consola.start(`[${config.name}] (${config.docsRepo}) 开始部署...`)
     ghpages.publish(
       outDir,
       {
         branch: config.branch,
-        repo: config.repo,
+        repo: config.docsRepo,
       },
       (err) => {
         if (err) {
           reject(err)
         } else {
-          consola.success(`[${config.name}] (${config.repo}) 部署成功`)
+          consola.success(`[${config.name}] (${config.docsRepo}) 部署成功`)
           resolve()
         }
       },

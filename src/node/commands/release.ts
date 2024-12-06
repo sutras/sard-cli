@@ -35,7 +35,7 @@ async function login() {
     process.stdin.pipe(child.stdin)
 
     child.stdout.on('data', (data) => {
-      console.log(String(data))
+      consola.log(String(data))
       if (/Logged in/.test(data)) {
         resolve()
       }

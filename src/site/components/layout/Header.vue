@@ -19,34 +19,47 @@
     >
       <i class="hsi hsi-three-dots"></i>
     </div>
-    <Sideslip title="导航" side="right" v-model:visible="topbarVisible">
-      <Topnav @link-click="topbarVisible = false"></Topnav>
-    </Sideslip>
+    <DocSideslip title="导航" side="right" v-model:visible="topbarVisible">
+      <DocTopnav @link-click="topbarVisible = false"></DocTopnav>
+    </DocSideslip>
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, inject, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, inject, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import Sideslip from './Sideslip.vue'
-import Topnav from './Topnav.vue'
+import DocSideslip from './Sideslip.vue'
+import DocTopnav from './Topnav.vue'
 import type { MergedConfig } from '../../../node/config-type'
 
-const emit = defineEmits<{
-  (e: 'sidebar-toggle'): void
-}>()
+export default defineComponent({
+  components: {
+    DocSideslip,
+    DocTopnav,
+  },
+  emits: ['sidebar-toggle'],
+  setup(_, { emit }) {
+    const {
+      site: { name, logo },
+    } = inject<MergedConfig>('sardConfig')!
 
-const {
-  site: { name, logo },
-} = inject<MergedConfig>('sardConfig')!
+    const route = useRoute()
 
-const route = useRoute()
+    const withSidebar = computed(() => {
+      return route.matched[1]?.children?.length > 0
+    })
 
-const withSidebar = computed(() => {
-  return route.matched[1]?.children?.length > 0
+    const topbarVisible = ref(false)
+
+    return {
+      name,
+      logo,
+      withSidebar,
+      topbarVisible,
+      emit,
+    }
+  },
 })
-
-const topbarVisible = ref(false)
 </script>
 
 <style lang="scss" scoped>

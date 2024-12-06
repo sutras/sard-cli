@@ -11,23 +11,27 @@
   ></div>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
-const props = defineProps<{
-  visible?: boolean
-}>()
-
-const emit = defineEmits<{
-  (e: 'update:visible', visible: boolean): void
-}>()
-
-const innerVisible = computed({
-  get() {
-    return props.visible
+export default defineComponent({
+  props: {
+    visible: Boolean,
   },
-  set(visible) {
-    emit('update:visible', visible)
+  emits: ['update:visible'],
+  setup(props, { emit }) {
+    const innerVisible = computed({
+      get() {
+        return props.visible
+      },
+      set(visible) {
+        emit('update:visible', visible)
+      },
+    })
+
+    return {
+      innerVisible,
+    }
   },
 })
 </script>

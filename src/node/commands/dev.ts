@@ -4,12 +4,13 @@ import { devMobile } from './dev-mobile.js'
 import chalk from 'chalk'
 import { sard } from '../utils/runtime.js'
 import { sardConfig } from '../getSardConfig.js'
+import consola from 'consola'
 
 const createViteDevServer = async () => {
   const server = await createServer(
     mergeViteConfig({
       async onRestart() {
-        console.log('onRestart')
+        consola.log('onRestart')
         await server.close()
         createViteDevServer()
       },
@@ -20,7 +21,7 @@ const createViteDevServer = async () => {
 }
 
 function logUrl(platform: string, url: string) {
-  console.log(
+  consola.log(
     `  ${chalk.green('➜')}  ${chalk.bold(platform)}:   ${chalk.cyan(url)}`,
   )
 }
@@ -34,7 +35,7 @@ export async function dev() {
     let start = false
 
     child.stderr!.on('data', (data) => {
-      console.log(data)
+      consola.log(data)
     })
 
     child.stdout!.on('data', (data) => {

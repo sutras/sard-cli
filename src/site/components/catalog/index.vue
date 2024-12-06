@@ -4,33 +4,42 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDom } from './useDom'
 import { useScrollSpy } from './useScrollSpy'
 
-const route = useRoute()
+export default defineComponent({
+  setup() {
+    const route = useRoute()
 
-const dom = useDom()
-const index = useScrollSpy(dom)
+    const dom = useDom()
+    const index = useScrollSpy(dom)
 
-const finalDom = computed(() => {
-  const item = dom.value[index.value]
-  if (!item) {
-    return ''
-  }
-  return dom.value
-    .map((item, i) => {
-      return i === index.value
-        ? item.replace('doc-catalog-link', 'doc-catalog-link active')
-        : item
+    const finalDom = computed(() => {
+      const item = dom.value[index.value]
+      if (!item) {
+        return ''
+      }
+      return dom.value
+        .map((item, i) => {
+          return i === index.value
+            ? item.replace('doc-catalog-link', 'doc-catalog-link active')
+            : item
+        })
+        .join('')
     })
-    .join('')
-})
 
-const visible = computed(() => {
-  return route.matched[1]?.children?.length > 0
+    const visible = computed(() => {
+      return route.matched[1]?.children?.length > 0
+    })
+
+    return {
+      finalDom,
+      visible,
+    }
+  },
 })
 </script>
 

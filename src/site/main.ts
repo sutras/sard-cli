@@ -16,23 +16,17 @@ app.use(router)
 // # nprogress
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
-router.beforeEach(() => {
-  NProgress.start()
-})
-router.afterEach((to) => {
-  NProgress.done()
 
-  if (to.hash) {
-    setTimeout(() => {
-      const el = document.querySelector(to.hash)
-      if (el) {
-        window.scrollBy({
-          top: el.getBoundingClientRect().top - 60 - 10,
-          behavior: 'instant',
-        })
-      }
-    })
-  } else {
+router.beforeEach((to, from) => {
+  if (to.path !== from.path) {
+    NProgress.start()
+  }
+})
+router.afterEach((to, from) => {
+  if (to.path !== from.path) {
+    NProgress.done()
+  }
+  if (!to.hash) {
     window.scrollTo(0, 0)
   }
 })

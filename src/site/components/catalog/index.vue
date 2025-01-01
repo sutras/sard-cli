@@ -6,14 +6,11 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useRoute } from 'vue-router'
 import { useDom } from './useDom'
 import { useScrollSpy } from './useScrollSpy'
 
 export default defineComponent({
   setup() {
-    const route = useRoute()
-
     const dom = useDom()
     const index = useScrollSpy(dom)
 
@@ -32,7 +29,7 @@ export default defineComponent({
     })
 
     const visible = computed(() => {
-      return route.matched[1]?.children?.length > 0
+      return dom.value.length > 0
     })
 
     return {
@@ -53,7 +50,7 @@ $indent-gap: 16px !default;
   box-sizing: border-box;
   width: 200px;
   height: calc(100vh - var(--doc-navbar-height));
-  padding: 24px;
+  padding: 24px 24px 24px 0;
   overflow-y: auto;
 
   ul {

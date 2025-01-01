@@ -74,6 +74,10 @@ export interface UserConfig {
    */
   mobile?: boolean
   /**
+   * 设置指定路径下显示移动端演示案例，正则字符串
+   */
+  mobileVisible?: string
+  /**
    * git 仓库配置，用于部署文档站点
    */
   git?: {
@@ -145,9 +149,13 @@ export interface UserConfig {
      */
     tags?: HtmlTagDescriptor[]
     /**
-     * 首页地址, 默认 /home
+     * 首页地址
      */
     homePath?: string
+    /**
+     * 404 页面
+     */
+    notFoundPath?: string
     /**
      * 页面底部的版权信息
      */

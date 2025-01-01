@@ -6,6 +6,7 @@ import { VitePluginSardConfig } from '../plugins/VitePluginSardConfig.js'
 import { VitePluginRouter } from '../plugins/VitePluginRouter.js'
 import { VitePluginMarkdown } from '../plugins/VitePluginMarkdown.js'
 import { VitePluginMobile } from '../plugins/VitePluginMobile.js'
+import { VitePluginGithubPages404 } from '../plugins/VitePluginGithubPages404.js'
 import {
   VitePluginRestart,
   VitePluginRestartOptions,
@@ -19,6 +20,7 @@ import {
 import { SARD_CONFIG_FILENAME } from '../config.js'
 import { sardConfig } from '../getSardConfig.js'
 import { type InlineConfig } from 'vite'
+import { VitePluginGithubPagesNojekyll } from '../plugins/VitePluginGithubPagesNojekyll.js'
 
 export function mergeViteConfig(
   options: VitePluginRestartOptions,
@@ -40,6 +42,8 @@ export function mergeViteConfig(
           options.onRestart?.()
         },
       }),
+      VitePluginGithubPages404(),
+      VitePluginGithubPagesNojekyll(),
     ],
     root: SITE_DIR,
     base: sardConfig.base,

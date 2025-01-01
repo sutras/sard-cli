@@ -43,6 +43,19 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
       redirect: typeof nav === 'object' ? nav.redirect : undefined,
     }
 
+    // 首页
+    if (routePath === '/') {
+      categories.push({
+        type: 'cate',
+        ...mergedNav,
+        order: mergedNav.order ?? 0,
+        path: routePath,
+        id: ++count,
+        file,
+      })
+      return
+    }
+
     let category = categories.find((item) => item.title === mergedNav.title)
     let items: MenuItem[] = []
     if (!category) {

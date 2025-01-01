@@ -1,4 +1,4 @@
-import { Plugin } from 'vite'
+import { type Plugin } from 'vite'
 import path from 'node:path'
 import { VIRTUAL_ROUTER, RESOLVED_VIRTUAL_ROUTER } from '../utils/constants.js'
 import { sardConfig } from '../getSardConfig.js'
@@ -7,29 +7,31 @@ import {
   generateRoutes,
   getRouterConfig,
 } from './router/getRouterConfig.js'
+import chokidar from 'chokidar'
 
-const { build: buildConfig } = sardConfig
+const { build: buildConfig, site } = sardConfig
 const srcDir = path.resolve(process.cwd(), buildConfig.srcDir)
 
 async function loadRouter(baseRoutes: BaseRoute[]) {
   const routesStr = generateRoutes(baseRoutes)
 
-  const code = `import { createRouter, createWebHashHistory } from "vue-router"
+  const code = `import { createRouter, createWebHistory } from "vue-router"
 import BasicLayout from '@@/components/layout/BasicLayout.vue'
 import Trunking from '@@/components/layout/Trunking.vue'
 
 const router = createRouter({
-  history: createWebHashHistory('${sardConfig.base}'),
+  history: createWebHistory('${sardConfig.base}'),
 	routes: [
     {
       path: '/',
       component: BasicLayout,
       children: ${routesStr},
-      redirect: '${sardConfig.site.homePath}',
-    },{
+      redirect: ${site.homePath !== '/' ? `'${site.homePath}'` : 'undefined'},
+    },
+    {
       path: '/:pathMatch(.*)*',
-      redirect: '/',
-    }
+      redirect: ${site.notFoundPath ? `'${site.notFoundPath}'` : 'undefined'},
+    },
   ]
 })
 
@@ -58,33 +60,26 @@ export function VitePluginRouter(): Plugin {
       }
     },
     async configureServer(server) {
-      server.watcher.on('all', async (eventName, filePath) => {
-        if (
-          (eventName === 'add' ||
-            eventName === 'unlink' ||
-            eventName === 'change') &&
-          new RegExp(`^${srcDir}.*\\.md$`).test(filePath)
-        ) {
-          baseRoutes = await getRouterConfig()
-          ;[RESOLVED_VIRTUAL_ROUTER].forEach((item) => {
-            const module = server.moduleGraph.getModuleById(item)
-            if (module) {
-              server.moduleGraph.invalidateModule(module)
-              server.ws.send({
-                type: 'update',
-                updates: [
-                  {
-                    type: 'js-update',
-                    path: filePath,
-                    acceptedPath: filePath,
-                    timestamp: performance.now(),
-                  },
-                ],
-              })
-            }
-          })
+      const events = ['add', 'change', 'unlink']
+
+      chokidar.watch(srcDir).on('all', (event, path) => {
+        if (/\.md$/.test(path) && events.includes(event)) {
+          handle()
         }
       })
+
+      async function handle() {
+        baseRoutes = await getRouterConfig()
+        ;[RESOLVED_VIRTUAL_ROUTER].forEach((item) => {
+          const module = server.moduleGraph.getModuleById(item)
+          if (module) {
+            server.moduleGraph.invalidateModule(module)
+            server.ws.send({
+              type: 'full-reload',
+            })
+          }
+        })
+      }
     },
   }
 }

@@ -38,13 +38,14 @@ async function getBaseRoutes(files: string[]) {
     files.map(async (file) => {
       const { name, dir } = path.parse(file)
 
-      const routePath = (
-        dir.replace(new RegExp(`^${srcDir}`), '') +
-        (/^(?:index|readme)$/i.test(name) ? '' : '/' + name)
-      )
-        .split('/')
-        .map((item) => kebabCase(item))
-        .join('/')
+      const routePath =
+        (
+          dir.replace(new RegExp(`^${srcDir}`), '') +
+          (/^(?:index|readme)$/i.test(name) ? '' : '/' + name)
+        )
+          .split('/')
+          .map((item) => kebabCase(item))
+          .join('/') || '/'
 
       const segments = routePath.split('/').filter(Boolean)
 

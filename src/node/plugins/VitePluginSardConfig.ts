@@ -1,4 +1,4 @@
-import { Plugin } from 'vite'
+import { type Plugin } from 'vite'
 import {
   VIRTUAL_SARD_CONFIG,
   RESOLVED_VIRTUAL_SARD_CONFIG,

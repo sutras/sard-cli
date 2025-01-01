@@ -1,5 +1,5 @@
 import mime from 'mime'
-import { Plugin } from 'vite'
+import { type Plugin } from 'vite'
 import { sardConfig } from '../getSardConfig.js'
 
 const {

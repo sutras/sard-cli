@@ -1,7 +1,7 @@
 import { onMounted, ref } from 'vue'
 
 function getDom(context: Element) {
-  return [...context.querySelectorAll('h1, h2, h3, h4')].map((heading) => {
+  return [...context.querySelectorAll('h2, h3, h4')].map((heading) => {
     return `<li data-level="${heading.nodeName.slice(
       1,
     )}"><a class="doc-catalog-link" href="#${

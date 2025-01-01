@@ -1,5 +1,5 @@
 <template>
-  <div class="doc-content">
+  <div class="doc-content" @click="handleClick">
     <h1>
       {{ fm.title }} {{ fm.subtitle }}
       <sup v-if="fm.version">{{ fm.version }}</sup>
@@ -10,7 +10,8 @@
 
 <script lang="ts">
 import useCodeTool from '@@/components/code-tool/useCodeTool'
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -26,7 +27,43 @@ export default defineComponent({
   setup() {
     useCodeTool()
 
-    return {}
+    const route = useRoute()
+    const router = useRouter()
+
+    const scrollToHash = () => {
+      if (route.hash) {
+        const el = document.querySelector(route.hash)
+        if (el) {
+          window.scrollBy({
+            top: el.getBoundingClientRect().top - 60 - 10,
+            behavior: 'instant',
+          })
+        }
+      }
+    }
+
+    onMounted(() => {
+      scrollToHash()
+    })
+
+    const handleClick = (event: MouseEvent) => {
+      let current = event.target as Node | null
+
+      do {
+        if (current && current instanceof HTMLAnchorElement) {
+          const href = current.getAttribute('href')
+          if (href && href.startsWith('.')) {
+            event.preventDefault()
+            router.push(href)
+          }
+          break
+        }
+      } while (current && (current = current.parentNode))
+    }
+
+    return {
+      handleClick,
+    }
   },
 })
 </script>

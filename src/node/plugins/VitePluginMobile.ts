@@ -1,4 +1,4 @@
-import { Plugin } from 'vite'
+import { type Plugin } from 'vite'
 import { VIRTUAL_MOBILE, RESOLVED_VIRTUAL_MOBILE } from '../utils/constants.js'
 import { sard } from '../utils/runtime.js'
 import { MOBILE_BUILD_PATH } from '../getSardConfig.js'

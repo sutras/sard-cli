@@ -18,10 +18,13 @@ import { useRoute } from 'vue-router'
 import { useBuildChannel, channel } from '../../utils/channel'
 import baseUrl from 'virtual:mobile'
 import type { ThemeContext } from '../../use/useTheme'
+import type { MergedConfig } from '../../../node/config-type'
 
 export default defineComponent({
   setup() {
     const context = inject<ThemeContext>('theme')!
+
+    const { mobileVisible } = inject<MergedConfig>('sardConfig')!
 
     const url = ref(baseUrl)
 
@@ -32,7 +35,9 @@ export default defineComponent({
     const route = useRoute()
 
     const visible = computed(() => {
-      return route.matched.some((route) => /\/components\//.test(route.path))
+      return route.matched.some((route) =>
+        new RegExp(mobileVisible).test(route.path),
+      )
     })
 
     const iframeRef = ref<HTMLIFrameElement>()
@@ -79,6 +84,7 @@ export default defineComponent({
   top: calc(var(--doc-navbar-height) + 16px);
   width: var(--doc-mobile-width);
   height: calc(var(--doc-mobile-height) + 32px);
+  margin-right: 24px;
   border: 1px solid var(--doc-border-color);
   border-radius: var(--doc-rounded-xl);
   overflow: hidden;
@@ -106,12 +112,8 @@ export default defineComponent({
     cursor: pointer;
   }
 
-  @media (max-width: 980px) {
+  @media (max-width: 1200px) {
     display: none;
-  }
-
-  @media (max-width: 1440px) {
-    margin-right: 20px;
   }
 }
 </style>

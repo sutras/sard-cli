@@ -41,6 +41,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const {
       site: { name, logo },
+      base,
     } = inject<MergedConfig>('sardConfig')!
 
     const route = useRoute()
@@ -53,7 +54,7 @@ export default defineComponent({
 
     return {
       name,
-      logo,
+      logo: base + logo,
       withSidebar,
       topbarVisible,
       emit,

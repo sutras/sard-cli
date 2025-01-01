@@ -30,6 +30,7 @@ const defaultConfig: MergedConfig = {
   },
   codeAlias: {},
   mobile: false,
+  mobileVisible: '\\/components\\/',
   git: [],
   site: {
     outDir: 'docs',
@@ -41,6 +42,7 @@ const defaultConfig: MergedConfig = {
     },
     tags: [],
     homePath: '/home',
+    notFoundPath: '',
     copyright: '',
   },
 }

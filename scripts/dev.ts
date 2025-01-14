@@ -3,8 +3,9 @@ import { copyFiles } from './utils'
 
 async function dev() {
   await copyFiles()
-  child_process.spawn(`npx`, ['tsc', '--watch'], {
+  child_process.spawn('npx', ['tsc', '--watch'], {
     stdio: 'inherit',
+    shell: true,
   })
 }
 

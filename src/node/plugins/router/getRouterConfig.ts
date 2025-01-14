@@ -6,6 +6,7 @@ import { kebabCase } from 'lodash-es'
 import { sardConfig } from '../../getSardConfig.js'
 import { FrontMatter } from '../../../common-type.js'
 import { generateMenu, MenuItem } from './generateMenu.js'
+import { normalizePath } from 'vite'
 
 const { build: buildConfig } = sardConfig
 const srcDir = path.resolve(process.cwd(), buildConfig.srcDir)
@@ -14,7 +15,7 @@ export const langs = ['zh-CN', 'en-US']
 export const defaultLang = 'zh-CN'
 
 async function getMarkdownFile(baseDir: string) {
-  return await glob(`${baseDir}/**/*.md`, {
+  return await glob(`${baseDir}/**/*.md`.replace(/\\/g, '/'), {
     ignore: {
       ignored(p) {
         return p
@@ -40,10 +41,10 @@ async function getBaseRoutes(files: string[]) {
 
       const routePath =
         (
-          dir.replace(new RegExp(`^${srcDir}`), '') +
+          dir.replace(new RegExp(`^${srcDir.replace(/\\/g, '\\\\')}`), '') +
           (/^(?:index|readme)$/i.test(name) ? '' : '/' + name)
         )
-          .split('/')
+          .split(/[\\/]/)
           .map((item) => kebabCase(item))
           .join('/') || '/'
 
@@ -75,7 +76,7 @@ export function generateRoutes(routes: BaseRoute[]) {
       ({ file, path, title, hidden, type, redirect, children }): string => {
         return `{
           path: '${path}',
-          component: () => import('${file}'),
+          component: () => import('${normalizePath(file!)}'),
           meta: ${JSON.stringify({
             title,
             hidden,

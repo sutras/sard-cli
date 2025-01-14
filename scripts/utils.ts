@@ -7,7 +7,7 @@ export const destDir = path.resolve(process.cwd(), 'dist')
 
 export async function copyFiles() {
   const files = await glob(
-    path.resolve(srcDir, '**/*.{html,css,woff2,scss,vue}'),
+    path.resolve(srcDir, '**/*.{html,css,woff2,scss,vue}').replace(/\\/g, '/'),
   )
 
   for (const file of files) {

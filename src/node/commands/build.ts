@@ -30,7 +30,7 @@ async function deleteOutDir() {
 }
 
 async function copySrcToDist(pattern: string) {
-  const result = await glob(path.resolve(srcDir, pattern))
+  const result = await glob(path.resolve(srcDir, pattern).replace(/\\/g, '/'))
   const targetResult = result.map((file) =>
     path.resolve(outDir, '.' + file.replace(srcDir, '')),
   )
@@ -89,12 +89,16 @@ async function compileTsAndGenerateVueType() {
     })
   })
 
-  const vueJs = await glob(path.resolve(outDir, './**/*.vue.js'))
+  const vueJs = await glob(
+    path.resolve(outDir, './**/*.vue.js').replace(/\\/g, '/'),
+  )
   for (const file of vueJs) {
     await fsp.rm(file)
   }
 
-  const vueDts = await glob(path.resolve(outDir, './**/*.vue.d.ts'))
+  const vueDts = await glob(
+    path.resolve(outDir, './**/*.vue.d.ts').replace(/\\/g, '/'),
+  )
   for (const file of vueDts) {
     await fsp.rename(file, file.replace(/\.vue\.d\.ts$/, '.d.ts'))
   }
@@ -168,7 +172,9 @@ function doCompileVue(code: string, filePath: string) {
 }
 
 async function compileVue() {
-  const result = await glob(path.resolve(srcDir, './**/*.vue'))
+  const result = await glob(
+    path.resolve(srcDir, './**/*.vue').replace(/\\/g, '/'),
+  )
   const targetResult = result.map((file) =>
     path.resolve(outDir, '.' + file.replace(srcDir, '')),
   )

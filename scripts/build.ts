@@ -5,8 +5,9 @@ import { rimraf } from 'rimraf'
 async function build() {
   await rimraf(destDir)
   await copyFiles()
-  child_process.spawn(`npx`, ['tsc'], {
+  child_process.spawn('npx', ['tsc'], {
     stdio: 'inherit',
+    shell: true,
   })
 }
 

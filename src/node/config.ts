@@ -6,6 +6,7 @@ import { logFatalError } from './utils/logger.js'
 import { build } from 'esbuild'
 import { tempDir } from './utils/constants.js'
 import type { MergedConfig, UserConfig } from './config-type.js'
+import { pathToFileURL } from 'node:url'
 
 export const DEFAULT_CONFIG_FILES = [
   'sard.config.ts',
@@ -86,7 +87,7 @@ export async function loadConfigFromFile(): Promise<UserConfig> {
   const tempFileName = path.resolve(tempDir, 'sard.config.mjs')
   await fsp.writeFile(tempFileName, text)
 
-  return (await import(tempFileName)).default as UserConfig
+  return (await import(pathToFileURL(tempFileName).href)).default as UserConfig
 }
 
 export async function getSardConfig() {

@@ -44,7 +44,7 @@ export function compileAtRule(id: string, code: string) {
   const tagNames = Object.keys(rules).join('|')
 
   const regExp = new RegExp(
-    `^@(${tagNames})(\\(.*\\))? *$\n(?:([\\s\\S]*?)(^@end\\1) *)?`,
+    `^@(${tagNames})(\\(.*\\))? *$\r?\n(?:([\\s\\S]*?)(^@end\\1) *)?`,
     'mg',
   )
 

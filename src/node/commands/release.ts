@@ -25,12 +25,13 @@ async function checkLogin() {
 
 async function login() {
   return new Promise<void>((resolve, reject) => {
-    const child = child_process.spawn(`npm`, [
-      'login',
-      '--registry',
-      npmRegistry,
-      '-ws=false',
-    ])
+    const child = child_process.spawn(
+      `npm`,
+      ['login', '--registry', npmRegistry, '-ws=false'],
+      {
+        shell: true,
+      },
+    )
 
     process.stdin.pipe(child.stdin)
 
@@ -55,6 +56,7 @@ async function publish() {
       {
         stdio: 'inherit',
         cwd: outDir,
+        shell: true,
       },
     )
   })

@@ -88,27 +88,27 @@ export interface UserConfig {
     /**
      * 图标名称，例如：github
      */
-    icon: string
+    icon?: string
+    /**
+     * 仓库url
+     */
+    url?: string
     /**
      * 文档站点文件所在的分支名称，例如：gh-pages
      */
     branch: string
     /**
-     * 仓库地址
-     */
-    repo: string
-    /**
      * 文档仓库地址
      */
     docsRepo: string
     /**
-     * 仓库url
-     */
-    url: string
-    /**
      * gitee 手动刷新 pages 的页面地址
      */
     pages?: string
+    /**
+     * 主仓库，用于提交issues和讨论，不指定则取第一个
+     */
+    main?: boolean
   }[]
 
   /**

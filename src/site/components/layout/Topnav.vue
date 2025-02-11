@@ -14,7 +14,7 @@
     </template>
     <li class="doc-topnav-divide"></li>
     <template v-for="item in git" :key="item.name">
-      <li class="doc-topnav-item">
+      <li v-if="item.url" class="doc-topnav-item">
         <a
           class="doc-topnav-link"
           target="_blank"

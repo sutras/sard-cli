@@ -27,7 +27,7 @@ const remotes = git.map((item) => {
 })
 
 function getRemoteConfigs(remote: string) {
-  if (remote === 'both') {
+  if (remote === 'all') {
     return remotes
   } else {
     return [remotes.find((item) => item.name === remote)!]
@@ -63,8 +63,8 @@ export async function deploy() {
       message: '选择部署到哪个远程仓库？',
       choices: [
         {
-          name: 'both',
-          value: 'both',
+          name: 'all',
+          value: 'all',
         },
         ...git.map((item) => {
           return {

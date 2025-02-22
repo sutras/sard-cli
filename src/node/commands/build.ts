@@ -9,6 +9,7 @@ import { rimraf } from 'rimraf'
 import * as compiler from 'vue/compiler-sfc'
 import esbuild from 'esbuild'
 import { sardConfig } from '../getSardConfig.js'
+import conventionalChangelog from 'conventional-changelog'
 
 const { build: buildConfig } = sardConfig
 
@@ -222,16 +223,23 @@ async function copyWxs() {
 
 async function generateChangelog() {
   await new Promise<void>((resolve, reject) => {
-    child_process.exec(
-      `conventional-changelog -p angular -i changelog.md -s -r 0`,
-      (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      },
-    )
+    let data = ''
+
+    conventionalChangelog({
+      preset: 'angular',
+      releaseCount: 0,
+    })
+      .setEncoding('utf8')
+      .on('data', (chunk) => {
+        data += chunk
+      })
+      .on('error', (err) => {
+        reject(err)
+      })
+      .on('end', async () => {
+        await fsp.writeFile(path.resolve(CWD, 'CHANGELOG.md'), data)
+        resolve()
+      })
   })
 }
 
@@ -251,8 +259,8 @@ async function copyReadme() {
 
 async function copyChangelog() {
   await fse.copyFile(
-    path.resolve(CWD, 'changelog.md'),
-    path.resolve(outDir, 'changelog.md'),
+    path.resolve(CWD, 'CHANGELOG.md'),
+    path.resolve(outDir, 'CHANGELOG.md'),
   )
 }
 
@@ -278,10 +286,10 @@ export async function build() {
     [copyScss, `已完成 scss 拷贝`],
     [copyStaticFiles, `已完成静态资源拷贝`],
     [copyWxs, `已完成 wxs 拷贝`],
-    [generateChangelog, `已完 changelog.md 文件生成`],
+    [generateChangelog, `已完 CHANGELOG.md 文件生成`],
     [copyPackageJson, `已复制 package.json 文件`],
     [copyReadme, `已复制 README.md 文件`],
-    [copyChangelog, `已复制 changelog.md 文件`],
+    [copyChangelog, `已复制 CHANGELOG.md 文件`],
     [generateUniModules, '已完成 uni_modules 目录构建'],
     [null, `已完成所有构建流程`],
   ] as const

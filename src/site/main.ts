@@ -35,5 +35,9 @@ router.afterEach((to, from) => {
 import sardConfig from 'virtual:sard-config'
 app.provide('sardConfig', sardConfig)
 
+// # meta
+import meta from 'virtual:meta'
+app.provide('meta', meta)
+
 // # mount
 app.mount('#root')

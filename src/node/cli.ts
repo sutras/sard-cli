@@ -85,6 +85,22 @@ program
   })
 
 program
+  .command('tag')
+  .description('给提交打标签')
+  .action(async () => {
+    const { tag } = await import('./commands/tag.js')
+    tag()
+  })
+
+program
+  .command('changelog')
+  .description('生成 changelog')
+  .action(async () => {
+    const { changelog } = await import('./commands/changelog.js')
+    changelog()
+  })
+
+program
   .command('build')
   .description('打包组件')
   .action(async () => {

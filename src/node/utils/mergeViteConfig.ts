@@ -2,6 +2,7 @@ import { relative, resolve } from 'node:path'
 import createVuePlugin from '@vitejs/plugin-vue'
 import autoprefixer from 'autoprefixer'
 import { VitePluginIndexHtml } from '../plugins/VitePluginIndexHtml.js'
+import { VitePluginMeta } from '../plugins/VitePluginMeta.js'
 import { VitePluginSardConfig } from '../plugins/VitePluginSardConfig.js'
 import { VitePluginRouter } from '../plugins/VitePluginRouter.js'
 import { VitePluginMarkdown } from '../plugins/VitePluginMarkdown.js'
@@ -30,6 +31,7 @@ export function mergeViteConfig(
     plugins: [
       VitePluginIndexHtml(),
       VitePluginSardConfig(),
+      VitePluginMeta(),
       VitePluginRouter(),
       VitePluginMarkdown(),
       VitePluginMobile(),

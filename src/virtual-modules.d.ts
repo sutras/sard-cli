@@ -5,9 +5,15 @@ declare module 'virtual:router' {
 }
 
 declare module 'virtual:sard-config' {
-  import { MergedConfig } from './node/config.js'
+  import { type MergedConfig } from './node/config.js'
   const config: MergedConfig
   export default config
+}
+
+declare module 'virtual:meta' {
+  import { type MetaData } from './node/meta.js'
+  const metaData: MetaData
+  export default metaData
 }
 
 declare module 'virtual:mobile' {

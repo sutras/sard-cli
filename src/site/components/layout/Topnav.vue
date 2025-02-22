@@ -13,6 +13,17 @@
       </li>
     </template>
     <li class="doc-topnav-divide"></li>
+    <li class="doc-topnav-item">
+      <a
+        class="doc-topnav-link"
+        target="_blank"
+        rel="noreferrer"
+        :href="`${mainRepository.url}/blob/main/CHANGELOG.md`"
+      >
+        更新日志
+      </a>
+    </li>
+    <li class="doc-topnav-divide"></li>
     <template v-for="item in git" :key="item.name">
       <li v-if="item.url" class="doc-topnav-item">
         <a
@@ -58,11 +69,14 @@ export default defineComponent({
       return path === '/' ? (route.path === '/' ? 'active' : '') : 'active'
     }
 
+    const mainRepository = git.find((item) => item.main) || git[0]
+
     return {
       emit,
       git,
       secondLevelRoutes,
       getActiveClass,
+      mainRepository,
     }
   },
 })

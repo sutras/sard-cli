@@ -9,7 +9,6 @@ import { rimraf } from 'rimraf'
 import * as compiler from 'vue/compiler-sfc'
 import esbuild from 'esbuild'
 import { sardConfig } from '../getSardConfig.js'
-import conventionalChangelog from 'conventional-changelog'
 
 const { build: buildConfig } = sardConfig
 
@@ -221,28 +220,6 @@ async function copyWxs() {
   await copySrcToDist('./**/*.wxs')
 }
 
-async function generateChangelog() {
-  await new Promise<void>((resolve, reject) => {
-    let data = ''
-
-    conventionalChangelog({
-      preset: 'angular',
-      releaseCount: 0,
-    })
-      .setEncoding('utf8')
-      .on('data', (chunk) => {
-        data += chunk
-      })
-      .on('error', (err) => {
-        reject(err)
-      })
-      .on('end', async () => {
-        await fsp.writeFile(path.resolve(CWD, 'CHANGELOG.md'), data)
-        resolve()
-      })
-  })
-}
-
 async function copyPackageJson() {
   await fse.copyFile(
     path.resolve(CWD, 'package.json'),
@@ -286,7 +263,6 @@ export async function build() {
     [copyScss, `已完成 scss 拷贝`],
     [copyStaticFiles, `已完成静态资源拷贝`],
     [copyWxs, `已完成 wxs 拷贝`],
-    [generateChangelog, `已完 CHANGELOG.md 文件生成`],
     [copyPackageJson, `已复制 package.json 文件`],
     [copyReadme, `已复制 README.md 文件`],
     [copyChangelog, `已复制 CHANGELOG.md 文件`],

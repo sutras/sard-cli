@@ -32,3 +32,6 @@ export const RESOLVED_VIRTUAL_SARD_CONFIG = '\0' + VIRTUAL_SARD_CONFIG
 
 export const VIRTUAL_MOBILE = 'virtual:mobile'
 export const RESOLVED_VIRTUAL_MOBILE = '\0' + VIRTUAL_MOBILE
+
+export const VIRTUAL_META = 'virtual:meta'
+export const RESOLVED_VIRTUAL_META = '\0' + VIRTUAL_META

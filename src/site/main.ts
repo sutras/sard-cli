@@ -14,8 +14,8 @@ import router from 'virtual:router'
 app.use(router)
 
 // # nprogress
-import 'nprogress/nprogress.css'
-import NProgress from 'nprogress'
+import 'es-nprogress/nprogress.css'
+import NProgress from 'es-nprogress'
 
 router.beforeEach((to, from) => {
   if (to.path !== from.path) {

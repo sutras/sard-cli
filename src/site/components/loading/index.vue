@@ -4,8 +4,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted } from 'vue'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+import NProgress from 'es-nprogress'
+import 'es-nprogress/nprogress.css'
 
 export default defineComponent({
   setup() {

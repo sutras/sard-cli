@@ -132,37 +132,43 @@ function doCompileVue(code: string, filePath: string) {
     filename: filePath,
   })
 
-  const style = descriptor.styles[0]
-
-  const compiledScript = compiler
-    .compileScript(descriptor, {
-      id: filePath,
-      inlineTemplate: false,
-    })
-    .content.replace(/^.*__isScriptSetup.*$/m, '')
-    // 转义uniapp条件注释，避免被esbuild删掉
-    .replace(/\/\/ #/g, '//! #')
-
-  let transformedScript = esbuild
-    .transformSync(compiledScript, {
-      loader: 'ts',
-      legalComments: 'inline',
-    })
-    .code.replace(/\/\/! #/g, '// #')
-    .replace(/\/\* @__PURE__ \*\//g, '')
-
+  // template
   let compiledVue = `<template>${descriptor.template!.content}</template>\n\n`
 
+  // wxs
   if (wxsMatch) {
     compiledVue += `<!-- #ifdef MP-WEIXIN -->\n${wxsMatch}\n<!-- #endif -->\n\n`
   }
 
-  const components = geAllComponentName(transformedScript)
-  if (components) {
-    transformedScript = insertComponents(transformedScript, components)
+  // script
+  if (descriptor.script || descriptor.scriptSetup) {
+    const compiledScript = compiler
+      .compileScript(descriptor, {
+        id: filePath,
+        inlineTemplate: false,
+      })
+      .content.replace(/^.*__isScriptSetup.*$/m, '')
+      // 转义uniapp条件注释，避免被esbuild删掉
+      .replace(/\/\/ #/g, '//! #')
+
+    let transformedScript = esbuild
+      .transformSync(compiledScript, {
+        loader: 'ts',
+        legalComments: 'inline',
+      })
+      .code.replace(/\/\/! #/g, '// #')
+      .replace(/\/\* @__PURE__ \*\//g, '')
+
+    const components = geAllComponentName(transformedScript)
+    if (components) {
+      transformedScript = insertComponents(transformedScript, components)
+    }
+
+    compiledVue += `<script>\n${transformedScript}</script>\n`
   }
 
-  compiledVue += `<script>\n${transformedScript}</script>\n`
+  // style
+  const style = descriptor.styles[0]
 
   if (style) {
     compiledVue += `\n<style lang="scss">${style.content}</style>`

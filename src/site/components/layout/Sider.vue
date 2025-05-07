@@ -55,25 +55,30 @@ export default defineComponent({
     })
 
     const renderLink = (item: RouteRecordRaw) => {
+      const { path, meta: { title, version = '' } = {} } = item
+      const versionNum = version.slice(0, -1).split('.').map(Number)
+      const showVersion = versionNum[0] >= 1 && versionNum[1] > 6
       return h(
         RouterLink,
         {
-          key: item.path,
+          key: path,
           class: 'doc-sidenav-link',
           exactActiveClass: 'active',
-          to: item.path,
+          to: path,
           onClick() {
             innerVisible.value = false
           },
         },
-        () =>
+        () => [
           h(
             'span',
             {
               class: 'doc-sidenav-link-title',
             },
-            item.meta!.title as string,
+            title as string,
           ),
+          showVersion ? h('sup', null, version) : null,
+        ],
       )
     }
 
@@ -197,10 +202,20 @@ export default defineComponent({
       background-color: rgba(var(--doc-blue-rgb), 0.1);
     }
 
-    &-link-value {
-      margin-left: 10px;
-      font-size: 85%;
-      color: var(--doc-gray-600);
+    &-title {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    sup {
+      margin-left: 2px;
+      padding: 2px;
+      font-size: var(--doc-text-xs);
+      line-height: 1;
+      color: var(--doc-white);
+      border-radius: var(--doc-rounded-sm);
+      background-color: var(--doc-primary);
     }
   }
 }

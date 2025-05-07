@@ -73,13 +73,23 @@ export function generateRoutes(routes: BaseRoute[]) {
 
   function mapRoute(menu: MenuItem[]) {
     const convertedRoutes = menu.map(
-      ({ file, path, title, hidden, type, redirect, children }): string => {
+      ({
+        file,
+        path,
+        title,
+        hidden,
+        type,
+        redirect,
+        children,
+        version,
+      }): string => {
         return `{
           path: '${path}',
           component: () => import('${normalizePath(file!)}'),
           meta: ${JSON.stringify({
             title,
             hidden,
+            version,
             type,
           })},
           redirect: ${redirect ? `'${redirect}'` : 'undefined'},

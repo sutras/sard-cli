@@ -10,6 +10,7 @@ export interface MenuItem {
   hidden?: boolean
   children?: MenuItem[]
   redirect?: string
+  version?: string
 }
 
 function assign(target: object, ...args: object[]) {
@@ -29,7 +30,16 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
 
   baseRoutes.forEach((route) => {
     const {
-      frontMatter: { nav, title, subtitle, order, group, hidden, redirect },
+      frontMatter: {
+        nav,
+        title,
+        subtitle,
+        order,
+        group,
+        hidden,
+        redirect,
+        version,
+      },
       segments,
       routePath,
       file,
@@ -119,6 +129,7 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
       id: ++count,
       file,
       redirect,
+      version,
     }
     if (groupChildren) {
       groupChildren.push(item)

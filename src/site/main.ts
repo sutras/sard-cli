@@ -6,38 +6,54 @@ import './index.scss'
 // App
 import { createApp } from 'vue'
 import App from './App.vue'
-const app = createApp(App)
 
 // # router
 import router from 'virtual:router'
-
-app.use(router)
 
 // # nprogress
 import 'es-nprogress/nprogress.css'
 import NProgress from 'es-nprogress'
 
-router.beforeEach((to, from) => {
-  if (to.path !== from.path) {
-    NProgress.start()
-  }
-})
-router.afterEach((to, from) => {
-  if (to.path !== from.path) {
-    NProgress.done()
-  }
-  if (!to.hash) {
-    window.scrollTo(0, 0)
-  }
-})
-
 // # sard-config
 import sardConfig from 'virtual:sard-config'
-app.provide('sardConfig', sardConfig)
 
 // # meta
 import meta from 'virtual:meta'
-app.provide('meta', meta)
+import { registerGlobalComponent } from './components'
 
-// # mount
-app.mount('#root')
+// # theme
+import themeConfig from 'virtual:theme'
+
+async function bootstrap() {
+  const app = createApp(App)
+
+  app.use(router)
+
+  router.beforeEach((to, from) => {
+    if (to.path !== from.path) {
+      NProgress.start()
+    }
+  })
+  router.afterEach((to, from) => {
+    if (to.path !== from.path) {
+      NProgress.done()
+    }
+    if (!to.hash) {
+      window.scrollTo(0, 0)
+    }
+  })
+
+  app.provide('sardConfig', sardConfig)
+
+  app.provide('meta', meta)
+
+  // # global components
+  registerGlobalComponent(app)
+
+  await themeConfig.enhanceApp?.({ app })
+
+  // # mount
+  app.mount('#root')
+}
+
+bootstrap()

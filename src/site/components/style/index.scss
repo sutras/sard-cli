@@ -1,3 +1,4 @@
 @use './vars.scss';
 @use './normal.scss';
-@use './components.scss';
+@use './doc.scss' as *;
+@use './code-tool.scss' as *;

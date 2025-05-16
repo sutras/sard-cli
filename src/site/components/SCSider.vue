@@ -1,35 +1,32 @@
 <template>
   <template v-if="sidebarRoutes.length > 0">
-    <DocSideslip
+    <SCSideslip
       side="left"
       :title="sideslipTitle"
       v-model:visible="innerVisible"
     >
       <div
         :class="[
-          'doc-sider',
+          'sc-sider',
           {
             show: innerVisible,
           },
         ]"
       >
-        <nav class="doc-sidenav">
+        <nav class="sc-sidenav">
           <component :is="SiderItems"></component>
         </nav>
       </div>
-    </DocSideslip>
+    </SCSideslip>
   </template>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, h, onMounted, VNode, watch } from 'vue'
 import { useRoute, RouterLink, RouteRecordRaw } from 'vue-router'
-import DocSideslip from './Sideslip.vue'
 
 export default defineComponent({
-  components: {
-    DocSideslip,
-  },
+  name: 'SCSider',
   props: {
     visible: Boolean,
   },
@@ -62,7 +59,7 @@ export default defineComponent({
         RouterLink,
         {
           key: path,
-          class: 'doc-sidenav-link',
+          class: 'sc-sidenav-link',
           exactActiveClass: 'active',
           to: path,
           onClick() {
@@ -73,7 +70,7 @@ export default defineComponent({
           h(
             'span',
             {
-              class: 'doc-sidenav-link-title',
+              class: 'sc-sidenav-link-title',
             },
             title as string,
           ),
@@ -90,7 +87,7 @@ export default defineComponent({
               'div',
               {
                 key: i,
-                class: 'doc-sidenav-title',
+                class: 'sc-sidenav-title',
               },
               item.meta!.title as string,
             ),
@@ -111,7 +108,7 @@ export default defineComponent({
     }
 
     function scrollIntoView() {
-      const activeLink = document.querySelector('.doc-sidenav-link.active')
+      const activeLink = document.querySelector('.sc-sidenav-link.active')
       if (activeLink) {
         activeLink.scrollIntoView({
           block: 'nearest',
@@ -144,22 +141,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.doc-sider {
+.sc-sider {
   box-sizing: border-box;
-  height: calc(100vh - var(--doc-navbar-height));
+  height: calc(100vh - var(--sc-navbar-height));
   flex: none;
   padding: 16px 16px 32px;
   overflow: auto;
-  background-color: var(--doc-emphasis-bg);
+  background-color: var(--sc-emphasis-bg);
 
   @media (min-width: 769px) {
     position: sticky;
     left: 0;
-    top: var(--doc-navbar-height);
+    top: var(--sc-navbar-height);
     z-index: 1010;
-    width: var(--doc-sider-width);
+    width: var(--sc-sider-width);
     padding: 8px 8px 32px;
-    border-right: 1px solid var(--doc-border-color);
+    border-right: 1px solid var(--sc-border-color);
 
     &:not(:hover)::-webkit-scrollbar {
       display: none;
@@ -167,7 +164,7 @@ export default defineComponent({
   }
 }
 
-.doc-sidenav {
+.sc-sidenav {
   display: flex;
   flex-direction: column;
 
@@ -175,8 +172,8 @@ export default defineComponent({
     margin-top: 32px;
     margin-bottom: 10px;
     padding: 0 10px;
-    font-size: var(--doc-text-xs);
-    color: var(--doc-tertiary-color);
+    font-size: var(--sc-text-xs);
+    color: var(--sc-tertiary-color);
   }
 
   &-link {
@@ -185,21 +182,21 @@ export default defineComponent({
     align-items: center;
     padding: 5px 10px;
     margin: 5px 0 0;
-    color: var(--doc-body-color);
-    font-size: var(--doc-text-sm);
+    color: var(--sc-body-color);
+    font-size: var(--sc-text-sm);
     line-height: 1.5;
     white-space: nowrap;
     text-decoration: none;
-    border-radius: var(--doc-rounded);
+    border-radius: var(--sc-rounded);
 
     &:hover {
       text-decoration: none;
-      background-color: rgba(var(--doc-blue-rgb), 0.1);
+      background-color: rgba(var(--sc-blue-rgb), 0.1);
     }
     &.active {
       font-weight: 500;
-      color: var(--doc-primary);
-      background-color: rgba(var(--doc-blue-rgb), 0.1);
+      color: var(--sc-primary);
+      background-color: rgba(var(--sc-blue-rgb), 0.1);
     }
 
     &-title {
@@ -211,11 +208,11 @@ export default defineComponent({
     sup {
       margin-left: 2px;
       padding: 2px;
-      font-size: var(--doc-text-xs);
+      font-size: var(--sc-text-xs);
       line-height: 1;
-      color: var(--doc-white);
-      border-radius: var(--doc-rounded-sm);
-      background-color: var(--doc-primary);
+      color: var(--sc-white);
+      border-radius: var(--sc-rounded-sm);
+      background-color: var(--sc-primary);
     }
   }
 }

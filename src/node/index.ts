@@ -1,2 +1,2 @@
-export type { UserConfig, Route } from './config-type'
+export type { UserConfig, Route, Theme } from './config-type'
 export { defineConfig } from './defineConfig.js'

@@ -1,7 +1,7 @@
 <template>
-  <div class="doc-layout-footer">
+  <div class="sc-layout-footer">
     <div>{{ site.copyright }}</div>
-    <div v-if="mainRepository" class="doc-layout-link-list">
+    <div v-if="mainRepository" class="sc-layout-link-list">
       <a :href="mainRepository.url" target="_blank" rel="noreferrer">
         {{ mainRepository.name }}
       </a>
@@ -25,9 +25,10 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue'
-import type { MergedConfig } from '../../../node/config-type'
+import type { MergedConfig } from '../../node/config-type'
 
 export default defineComponent({
+  name: 'SCFooter',
   setup() {
     const { site, git = [] } = inject<MergedConfig>('sardConfig')!
     const mainRepository = git.find((item) => item.main) || git[0]
@@ -41,7 +42,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.doc-layout-footer {
+.sc-layout-footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -49,8 +50,8 @@ export default defineComponent({
   margin-bottom: 20px;
   padding: 0 24px;
   text-align: center;
-  font-size: var(--doc-text-sm);
-  color: var(--doc-tertiary-color);
+  font-size: var(--sc-text-sm);
+  color: var(--sc-tertiary-color);
 
   @media (max-width: 768px) {
     & {
@@ -60,14 +61,14 @@ export default defineComponent({
 
   a {
     text-decoration: none;
-    color: var(--doc-tertiary-color);
+    color: var(--sc-tertiary-color);
     &:hover {
-      color: var(--doc-blue);
+      color: var(--sc-blue);
     }
   }
 }
 
-.doc-layout-link-list {
+.sc-layout-link-list {
   display: flex;
   flex-wrap: wrap;
   margin-left: 24px;

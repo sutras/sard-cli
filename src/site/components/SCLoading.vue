@@ -1,5 +1,5 @@
 <template>
-  <div class="doc-loading">加载中...</div>
+  <div class="sc-loading">加载中...</div>
 </template>
 
 <script lang="ts">
@@ -8,6 +8,7 @@ import NProgress from 'es-nprogress'
 import 'es-nprogress/nprogress.css'
 
 export default defineComponent({
+  name: 'SCLoading',
   setup() {
     onMounted(() => {
       NProgress.start()
@@ -21,5 +22,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@use './index.scss';
+.sc-loading {
+  margin: 100px auto 0;
+  text-align: center;
+}
 </style>

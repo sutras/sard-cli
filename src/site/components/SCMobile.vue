@@ -1,13 +1,13 @@
 <template>
-  <div v-if="visible" class="doc-mobile">
+  <div v-if="visible" class="sc-mobile">
     <iframe
       :src="url"
       ref="iframeRef"
-      class="doc-mobile-iframe"
+      class="sc-mobile-iframe"
       frameborder="0"
     ></iframe>
-    <div class="doc-mobile-toolbar">
-      <div class="doc-mobile-open" @click="openWindown">在新窗口打开⤴</div>
+    <div class="sc-mobile-toolbar">
+      <div class="sc-mobile-open" @click="openWindown">在新窗口打开⤴</div>
     </div>
   </div>
 </template>
@@ -15,12 +15,13 @@
 <script lang="ts">
 import { ref, computed, watch, inject, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import { useBuildChannel, channel } from '../../utils/channel'
+import { useBuildChannel, channel } from '../utils/channel'
 import baseUrl from 'virtual:mobile'
-import type { ThemeContext } from '../../use/useTheme'
-import type { MergedConfig } from '../../../node/config-type'
+import type { ThemeContext } from '../use/useTheme'
+import type { MergedConfig } from '../../node/config-type'
 
 export default defineComponent({
+  name: 'SCMobile',
   setup() {
     const context = inject<ThemeContext>('theme')!
 
@@ -79,20 +80,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.doc-mobile {
+.sc-mobile {
   position: sticky;
-  top: calc(var(--doc-navbar-height) + 16px);
-  width: var(--doc-mobile-width);
-  height: calc(var(--doc-mobile-height) + 32px);
+  top: calc(var(--sc-navbar-height) + 16px);
+  width: var(--sc-mobile-width);
+  height: calc(var(--sc-mobile-height) + 32px);
   margin-right: 24px;
-  border: 1px solid var(--doc-border-color);
-  border-radius: var(--doc-rounded-xl);
+  border: 1px solid var(--sc-border-color);
+  border-radius: var(--sc-rounded-xl);
   overflow: hidden;
 
   &-iframe {
     display: block;
-    width: var(--doc-mobile-width);
-    height: var(--doc-mobile-height);
+    width: var(--sc-mobile-width);
+    height: var(--sc-mobile-height);
     border: none;
   }
 
@@ -102,13 +103,13 @@ export default defineComponent({
     align-items: center;
     height: 32px;
     padding: 0 16px;
-    border-top: 1px solid var(--doc-border-color);
-    background-color: var(--doc-emphasis-bg);
+    border-top: 1px solid var(--sc-border-color);
+    background-color: var(--sc-emphasis-bg);
   }
 
   &-open {
     margin-left: auto;
-    font-size: var(--doc-text-sm);
+    font-size: var(--sc-text-sm);
     cursor: pointer;
   }
 

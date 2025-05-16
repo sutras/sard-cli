@@ -1,0 +1,136 @@
+:root {
+  --sc-code-bg: rgba(var(--sc-gray-200-rgb), 0.8);
+}
+
+[data-sc-theme='dark'] {
+  --sc-code-bg: var(--sc-secondary-bg);
+}
+
+.sc-demo {
+  margin-bottom: 16px;
+}
+
+.sc-anchor {
+  padding: 0 4px;
+  font-weight: 400;
+  color: var(--sc-primary);
+  text-decoration: none;
+  opacity: 0;
+  transition:
+    color 0.15s ease-in-out,
+    opacity 0.15s ease-in-out;
+
+  &:focus,
+  &:hover,
+  :hover > &,
+  :target > & {
+    opacity: 1;
+    color: var(--sc-primary);
+    text-decoration: none;
+  }
+}
+
+.sc-code-wrapper {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--sc-border-color);
+  border-radius: var(--sc-rounded-lg);
+
+  &:not(:last-child) {
+    margin-bottom: 32px;
+  }
+
+  code,
+  pre {
+    color: var(--sc-white);
+    border-radius: inherit;
+  }
+
+  pre {
+    max-height: 580px;
+    margin: 0;
+    overflow: auto;
+  }
+
+  code {
+    font-size: var(--sc-text-sm);
+  }
+}
+
+.sc-table-responsive {
+  margin-bottom: 64px;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    color: var(--sc-body-color);
+    font-size: var(--sc-text-sm);
+    line-height: 1.5;
+    border-collapse: collapse;
+
+    th {
+      padding: 8px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    td {
+      padding: 8px;
+      border-top: 1px solid var(--sc-border-color);
+
+      &:nth-child(1) {
+        width: 17%;
+        font-weight: 600;
+      }
+
+      &:nth-child(2) {
+        width: 40%;
+        min-width: 100px;
+      }
+
+      &:nth-child(3) {
+        width: 27%;
+        font-size: small;
+        color: var(--sc-danger);
+        word-wrap: break-word;
+      }
+
+      &:nth-child(4) {
+        width: 16%;
+      }
+
+      &:nth-child(1),
+      &:nth-child(3),
+      &:nth-child(4) {
+        font-family: var(--sc-font-monospace);
+      }
+    }
+
+    th,
+    td {
+      &:first-child {
+        padding-left: 0;
+      }
+    }
+
+    th,
+    td {
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+
+  sup {
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: var(--sc-text-xs);
+    font-family: var(--sc-font-sans-serif);
+    line-height: 1.2;
+    font-weight: 500;
+    color: var(--sc-primary);
+    border-radius: var(--sc-rounded-xs);
+    background-color: rgba(var(--sc-primary-rgb), 0.1);
+    transform: translateY(4px);
+  }
+}

@@ -1,0 +1,37 @@
+@use 'sass:color';
+@use 'sass:math';
+
+@function tint-color($color, $weight) {
+  @return color.mix(white, $color, $weight, $method: rgb);
+}
+
+@function shade-color($color, $weight) {
+  @return color.mix(black, $color, $weight, $method: rgb);
+}
+
+@function generate-perfect-gradient($base-color) {
+  @return (
+    50: tint-color($base-color, 92%),
+    100: tint-color($base-color, 80%),
+    200: tint-color($base-color, 60%),
+    300: tint-color($base-color, 40%),
+    400: tint-color($base-color, 20%),
+    500: $base-color,
+    600: shade-color($base-color, 20%),
+    700: shade-color($base-color, 40%),
+    800: shade-color($base-color, 60%),
+    900: shade-color($base-color, 80%)
+  );
+}
+
+@function extract-rgb($color) {
+  @return '#{color.channel($color, 'red')},#{color.channel($color, 'green')},#{color.channel($color, 'blue')}';
+}
+
+@mixin generate-gradient-var($name, $color) {
+  $color-gradient: generate-perfect-gradient($color);
+
+  @each $weight, $color in $color-gradient {
+    --sc-#{"" + $name}-#{$weight}: #{$color};
+  }
+}

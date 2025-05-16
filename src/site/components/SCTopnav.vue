@@ -1,9 +1,9 @@
 <template>
-  <ul class="doc-topnav">
+  <ul class="sc-topnav">
     <template v-for="route in secondLevelRoutes" :key="route.path">
-      <li v-if="!route.meta!.hidden" class="doc-topnav-item">
+      <li v-if="!route.meta!.hidden" class="sc-topnav-item">
         <router-link
-          class="doc-topnav-link"
+          class="sc-topnav-link"
           :active-class="getActiveClass(route.path)"
           :to="route.path"
           @click="emit('link-click')"
@@ -12,10 +12,10 @@
         </router-link>
       </li>
     </template>
-    <li class="doc-topnav-divide"></li>
-    <li class="doc-topnav-item">
+    <li class="sc-topnav-divide"></li>
+    <li class="sc-topnav-item">
       <a
-        class="doc-topnav-link"
+        class="sc-topnav-link"
         target="_blank"
         rel="noreferrer"
         :href="`${mainRepository.url}/blob/main/CHANGELOG.md`"
@@ -23,39 +23,36 @@
         更新日志
       </a>
     </li>
-    <li class="doc-topnav-divide"></li>
+    <li class="sc-topnav-divide"></li>
     <template v-for="item in git" :key="item.name">
-      <li v-if="item.url" class="doc-topnav-item">
+      <li v-if="item.url" class="sc-topnav-item">
         <a
-          class="doc-topnav-link"
+          class="sc-topnav-link"
           target="_blank"
           rel="noreferrer"
           :href="item.url"
         >
-          <i class="hsi doc-topnav-icon" :class="`hsi-${item.icon}`"></i>
-          <span class="doc-topnav-icon-text">{{ item.name }}</span>
+          <i class="hsi sc-topnav-icon" :class="`hsi-${item.icon}`"></i>
+          <span class="sc-topnav-icon-text">{{ item.name }}</span>
         </a>
       </li>
     </template>
-    <li class="doc-topnav-divide"></li>
-    <li class="doc-topnav-item">
-      <DocTheme class="doc-topnav-theme">
-        <span class="doc-topnav-icon-text">切换主题</span>
-      </DocTheme>
+    <li class="sc-topnav-divide"></li>
+    <li class="sc-topnav-item">
+      <SCTheme class="sc-topnav-theme">
+        <span class="sc-topnav-icon-text">切换主题</span>
+      </SCTheme>
     </li>
   </ul>
 </template>
 
 <script lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import DocTheme from './Theme.vue'
 import { defineComponent, inject } from 'vue'
-import type { MergedConfig } from '../../../node/config-type'
+import type { MergedConfig } from '../../node/config-type'
 
 export default defineComponent({
-  components: {
-    DocTheme,
-  },
+  name: 'SCTopnav',
   emits: ['link-click'],
   setup(_, { emit }) {
     const route = useRoute()
@@ -83,7 +80,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.doc-topnav {
+.sc-topnav {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,28 +104,28 @@ export default defineComponent({
     height: 100%;
     margin: 0;
     padding: 0 10px;
-    font-size: var(--doc-text-sm);
+    font-size: var(--sc-text-sm);
     color: inherit;
     text-decoration: none;
     &:hover {
-      color: var(--doc-emphasis-color);
+      color: var(--sc-emphasis-color);
       text-decoration: none;
     }
     &.active {
       font-weight: bold;
-      color: var(--doc-emphasis-color);
+      color: var(--sc-emphasis-color);
     }
   }
 
   &-divide {
     width: 1px;
     height: 40%;
-    background: var(--doc-border-color);
+    background: var(--sc-border-color);
     margin: 0 10px;
   }
 
   &-icon {
-    font-size: var(--doc-text-base);
+    font-size: var(--sc-text-base);
   }
 
   &-icon-text {
@@ -149,7 +146,7 @@ export default defineComponent({
       width: 100%;
       justify-content: flex-start;
       padding: 8px 0;
-      font-size: var(--doc-text-base);
+      font-size: var(--sc-text-base);
     }
 
     &-divide {
@@ -162,7 +159,7 @@ export default defineComponent({
       display: flex;
     }
 
-    .doc-topnav-theme {
+    .sc-topnav-theme {
       justify-content: flex-start;
       width: 100%;
       padding: 0;

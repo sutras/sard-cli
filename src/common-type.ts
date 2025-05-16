@@ -21,4 +21,5 @@ export interface FrontMatter {
   hidden?: boolean
   redirect?: string
   version?: string
+  disableMarkdownLayout?: boolean
 }

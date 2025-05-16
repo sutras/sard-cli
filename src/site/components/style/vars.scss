@@ -1,164 +1,173 @@
 @use 'sass:color';
+@use './utils' as *;
 
-@function extractRGB($color) {
-  @return '#{color.channel($color, 'red')},#{color.channel($color, 'green')},#{color.channel($color, 'blue')}';
-}
+$sc-white: #fff !default;
+$sc-gray-100: #f8f9fa !default;
+$sc-gray-200: #ecedee !default;
+$sc-gray-300: #e2e3e4 !default;
+$sc-gray-400: #d1d4d6 !default;
+$sc-gray-500: #b5b9bd !default;
+$sc-gray-600: #74787c !default;
+$sc-gray-700: #505457 !default;
+$sc-gray-800: #393c3f !default;
+$sc-gray-900: #242628 !default;
+$sc-black: #000 !default;
 
-$doc-white: #fff !default;
-$doc-gray-100: #f8f9fa !default;
-$doc-gray-200: #ecedee !default;
-$doc-gray-300: #e2e3e4 !default;
-$doc-gray-400: #d1d4d6 !default;
-$doc-gray-500: #b5b9bd !default;
-$doc-gray-600: #74787c !default;
-$doc-gray-700: #505457 !default;
-$doc-gray-800: #393c3f !default;
-$doc-gray-900: #242628 !default;
-$doc-black: #000 !default;
-
-$doc-blue: #0d6efd !default;
-$doc-indigo: #6610f2 !default;
-$doc-purple: #6f42c1 !default;
-$doc-pink: #d63384 !default;
-$doc-red: #dc3545 !default;
-$doc-orange: #fd7e14 !default;
-$doc-yellow: #ffc107 !default;
-$doc-green: #198754 !default;
-$doc-teal: #20c997 !default;
-$doc-cyan: #0dcaf0 !default;
+$sc-blue: #0d6efd !default;
+$sc-indigo: #6610f2 !default;
+$sc-purple: #6f42c1 !default;
+$sc-pink: #d63384 !default;
+$sc-red: #dc3545 !default;
+$sc-orange: #fd7e14 !default;
+$sc-yellow: #ffc107 !default;
+$sc-green: #198754 !default;
+$sc-teal: #20c997 !default;
+$sc-cyan: #0dcaf0 !default;
 
 :root {
-  --doc-navbar-height: 60px;
-  --doc-sider-width: 320px;
+  --sc-navbar-height: 60px;
+  --sc-sider-width: 320px;
 
-  --doc-mobile-width: 375px;
-  --doc-mobile-height: 667px;
+  --sc-mobile-width: 375px;
+  --sc-mobile-height: 667px;
 
   // # 灰度值
-  --doc-white: #fff;
-  --doc-gray-100: #f8f9fa;
-  --doc-gray-200: #e9ecef;
-  --doc-gray-300: #dee2e6;
-  --doc-gray-400: #ced4da;
-  --doc-gray-500: #adb5bd;
-  --doc-gray-600: #6c757d;
-  --doc-gray-700: #495057;
-  --doc-gray-800: #343a40;
-  --doc-gray-900: #212529;
-  --doc-black: #000;
+  --sc-white: #fff;
+  --sc-gray-100: #f8f9fa;
+  --sc-gray-200: #e9ecef;
+  --sc-gray-300: #dee2e6;
+  --sc-gray-400: #ced4da;
+  --sc-gray-500: #adb5bd;
+  --sc-gray-600: #6c757d;
+  --sc-gray-700: #495057;
+  --sc-gray-800: #343a40;
+  --sc-gray-900: #212529;
+  --sc-black: #000;
 
   // # 灰度值 rgb
-  --doc-white-rgb: #{extractRGB($doc-white)};
-  --doc-gray-100-rgb: #{extractRGB($doc-gray-100)};
-  --doc-gray-200-rgb: #{extractRGB($doc-gray-200)};
-  --doc-gray-300-rgb: #{extractRGB($doc-gray-300)};
-  --doc-gray-400-rgb: #{extractRGB($doc-gray-400)};
-  --doc-gray-500-rgb: #{extractRGB($doc-gray-500)};
-  --doc-gray-600-rgb: #{extractRGB($doc-gray-600)};
-  --doc-gray-700-rgb: #{extractRGB($doc-gray-700)};
-  --doc-gray-800-rgb: #{extractRGB($doc-gray-800)};
-  --doc-gray-900-rgb: #{extractRGB($doc-gray-900)};
-  --doc-black-rgb: #{extractRGB($doc-black)};
+  --sc-white-rgb: #{extract-rgb($sc-white)};
+  --sc-gray-100-rgb: #{extract-rgb($sc-gray-100)};
+  --sc-gray-200-rgb: #{extract-rgb($sc-gray-200)};
+  --sc-gray-300-rgb: #{extract-rgb($sc-gray-300)};
+  --sc-gray-400-rgb: #{extract-rgb($sc-gray-400)};
+  --sc-gray-500-rgb: #{extract-rgb($sc-gray-500)};
+  --sc-gray-600-rgb: #{extract-rgb($sc-gray-600)};
+  --sc-gray-700-rgb: #{extract-rgb($sc-gray-700)};
+  --sc-gray-800-rgb: #{extract-rgb($sc-gray-800)};
+  --sc-gray-900-rgb: #{extract-rgb($sc-gray-900)};
+  --sc-black-rgb: #{extract-rgb($sc-black)};
 
   // # 基础颜色
-  --doc-blue: #{$doc-blue};
-  --doc-indigo: #{$doc-indigo};
-  --doc-purple: #{$doc-purple};
-  --doc-pink: #{$doc-pink};
-  --doc-red: #{$doc-red};
-  --doc-orange: #{$doc-orange};
-  --doc-yellow: #{$doc-yellow};
-  --doc-green: #{$doc-green};
-  --doc-teal: #{$doc-teal};
-  --doc-cyan: #{$doc-cyan};
+  --sc-blue: #{$sc-blue};
+  --sc-indigo: #{$sc-indigo};
+  --sc-purple: #{$sc-purple};
+  --sc-pink: #{$sc-pink};
+  --sc-red: #{$sc-red};
+  --sc-orange: #{$sc-orange};
+  --sc-yellow: #{$sc-yellow};
+  --sc-green: #{$sc-green};
+  --sc-teal: #{$sc-teal};
+  --sc-cyan: #{$sc-cyan};
 
   // # 基础颜色 rgb
-  --doc-blue-rgb: #{extractRGB($doc-blue)};
-  --doc-indigo-rgb: #{extractRGB($doc-indigo)};
-  --doc-purple-rgb: #{extractRGB($doc-purple)};
-  --doc-pink-rgb: #{extractRGB($doc-pink)};
-  --doc-red-rgb: #{extractRGB($doc-red)};
-  --doc-orange-rgb: #{extractRGB($doc-orange)};
-  --doc-yellow-rgb: #{extractRGB($doc-yellow)};
-  --doc-green-rgb: #{extractRGB($doc-green)};
-  --doc-teal-rgb: #{extractRGB($doc-teal)};
-  --doc-cyan-rgb: #{extractRGB($doc-cyan)};
+  --sc-blue-rgb: #{extract-rgb($sc-blue)};
+  --sc-indigo-rgb: #{extract-rgb($sc-indigo)};
+  --sc-purple-rgb: #{extract-rgb($sc-purple)};
+  --sc-pink-rgb: #{extract-rgb($sc-pink)};
+  --sc-red-rgb: #{extract-rgb($sc-red)};
+  --sc-orange-rgb: #{extract-rgb($sc-orange)};
+  --sc-yellow-rgb: #{extract-rgb($sc-yellow)};
+  --sc-green-rgb: #{extract-rgb($sc-green)};
+  --sc-teal-rgb: #{extract-rgb($sc-teal)};
+  --sc-cyan-rgb: #{extract-rgb($sc-cyan)};
+
+  // # 基础颜色 梯度色
+  @include generate-gradient-var(blue, $sc-blue);
+  @include generate-gradient-var(indigo, $sc-indigo);
+  @include generate-gradient-var(purple, $sc-purple);
+  @include generate-gradient-var(pink, $sc-pink);
+  @include generate-gradient-var(red, $sc-red);
+  @include generate-gradient-var(orange, $sc-orange);
+  @include generate-gradient-var(yellow, $sc-yellow);
+  @include generate-gradient-var(green, $sc-green);
+  @include generate-gradient-var(teal, $sc-teal);
+  @include generate-gradient-var(cyan, $sc-cyan);
 
   // # 主题色
-  --doc-primary: var(--doc-blue);
-  --doc-secondary: var(--doc-gray-600);
-  --doc-success: var(--doc-green);
-  --doc-info: var(--doc-cyan);
-  --doc-warning: var(--doc-yellow);
-  --doc-danger: var(--doc-red);
+  --sc-primary: var(--sc-blue);
+  --sc-secondary: var(--sc-gray-600);
+  --sc-success: var(--sc-green);
+  --sc-info: var(--sc-cyan);
+  --sc-warning: var(--sc-yellow);
+  --sc-danger: var(--sc-red);
 
   // # 主题色 rgb
-  --doc-primary-rgb: var(--doc-blue-rgb);
-  --doc-secondary-rgb: var(--doc-gray-600-rgb);
-  --doc-success-rgb: var(--doc-green-rgb);
-  --doc-info-rgb: var(--doc-cyan-rgb);
-  --doc-warning-rgb: var(--doc-yellow-rgb);
-  --doc-danger-rgb: var(--doc-red-rgb);
+  --sc-primary-rgb: var(--sc-blue-rgb);
+  --sc-secondary-rgb: var(--sc-gray-600-rgb);
+  --sc-success-rgb: var(--sc-green-rgb);
+  --sc-info-rgb: var(--sc-cyan-rgb);
+  --sc-warning-rgb: var(--sc-yellow-rgb);
+  --sc-danger-rgb: var(--sc-red-rgb);
 
   // 字体
-  --doc-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+  --sc-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace, monospace;
-  --doc-font-sans-serif: system-ui, -apple-system, 'Segoe UI', Roboto,
+  --sc-font-sans-serif: system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji', monospace;
 
   // # 字号
-  --doc-text-xs: 12px;
-  --doc-text-sm: 14px;
-  --doc-text-base: 16px;
-  --doc-text-lg: 20px;
-  --doc-text-xl: 28px;
-  --doc-text-2xl: 40px;
+  --sc-text-xs: 12px;
+  --sc-text-sm: 14px;
+  --sc-text-base: 16px;
+  --sc-text-lg: 20px;
+  --sc-text-xl: 28px;
+  --sc-text-2xl: 40px;
 
   // 阴影
-  --doc-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --doc-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --doc-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+  --sc-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --sc-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --sc-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
     0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --doc-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+  --sc-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
     0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --doc-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+  --sc-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
 
   // 圆角
-  --doc-rounded-xs: 2px;
-  --doc-rounded-sm: 4px;
-  --doc-rounded: 6px;
-  --doc-rounded-lg: 10px;
-  --doc-rounded-xl: 14px;
-  --doc-rounded-full: 9999px;
+  --sc-rounded-xs: 2px;
+  --sc-rounded-sm: 4px;
+  --sc-rounded: 6px;
+  --sc-rounded-lg: 10px;
+  --sc-rounded-xl: 14px;
+  --sc-rounded-full: 9999px;
 
   // 灰度场景色
-  --doc-body-color: var(--doc-gray-900);
-  --doc-body-bg: var(--doc-white);
-  --doc-secondary-color: var(--doc-gray-700);
-  --doc-secondary-bg: var(--doc-gray-200);
-  --doc-tertiary-color: var(--doc-gray-600);
-  --doc-tertiary-bg: var(--doc-gray-300);
-  --doc-emphasis-color: var(--doc-black);
-  --doc-emphasis-bg: var(--doc-white);
-  --doc-border-color: var(--doc-gray-300);
-  --doc-hover-bg: var(--doc-gray-200);
+  --sc-body-color: var(--sc-gray-900);
+  --sc-body-bg: var(--sc-white);
+  --sc-secondary-color: var(--sc-gray-700);
+  --sc-secondary-bg: var(--sc-gray-200);
+  --sc-tertiary-color: var(--sc-gray-600);
+  --sc-tertiary-bg: var(--sc-gray-300);
+  --sc-emphasis-color: var(--sc-black);
+  --sc-emphasis-bg: var(--sc-white);
+  --sc-border-color: var(--sc-gray-300);
+  --sc-hover-bg: var(--sc-gray-200);
 }
 
-[data-doc-theme='dark'] {
-  --doc-body-color: var(--doc-gray-100);
-  --doc-body-bg: var(--doc-black);
-  --doc-secondary-color: var(--doc-gray-300);
-  --doc-secondary-bg: var(--doc-gray-700);
-  --doc-tertiary-color: var(--doc-gray-500);
-  --doc-tertiary-bg: var(--doc-gray-700);
-  --doc-quaternary-color: var(--doc-gray-600);
-  --doc-quaternary-bg: var(--doc-gray-700);
-  --doc-emphasis-color: var(--doc-white);
-  --doc-emphasis-bg: var(--doc-gray-900);
-  --doc-border-color: var(--doc-gray-700);
-  --doc-active-bg: var(--doc-gray-700);
-  --doc-active-deep-bg: var(--doc-gray-600);
+[data-sc-theme='dark'] {
+  --sc-body-color: var(--sc-gray-100);
+  --sc-body-bg: var(--sc-black);
+  --sc-secondary-color: var(--sc-gray-300);
+  --sc-secondary-bg: var(--sc-gray-700);
+  --sc-tertiary-color: var(--sc-gray-500);
+  --sc-tertiary-bg: var(--sc-gray-700);
+  --sc-quaternary-color: var(--sc-gray-600);
+  --sc-quaternary-bg: var(--sc-gray-700);
+  --sc-emphasis-color: var(--sc-white);
+  --sc-emphasis-bg: var(--sc-gray-900);
+  --sc-border-color: var(--sc-gray-700);
+  --sc-active-bg: var(--sc-gray-700);
+  --sc-active-deep-bg: var(--sc-gray-600);
 }

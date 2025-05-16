@@ -1,5 +1,5 @@
 <template>
-  <div class="doc-theme">
+  <div class="sc-theme">
     <i :class="icon"></i>
     <slot></slot>
     <select v-model="selected">
@@ -12,9 +12,10 @@
 
 <script lang="ts">
 import { inject, computed, defineComponent } from 'vue'
-import type { ThemeContext, ThemeType } from '../../use/useTheme'
+import type { ThemeContext, ThemeType } from '../use/useTheme'
 
 export default defineComponent({
+  name: 'SCTheme',
   setup() {
     const context = inject<ThemeContext>('theme')
 
@@ -48,14 +49,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.doc-theme {
+.sc-theme {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   padding: 0 10px;
-  color: var(--doc-secondary-color);
+  color: var(--sc-secondary-color);
   cursor: pointer;
 
   select {

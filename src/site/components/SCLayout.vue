@@ -1,9 +1,9 @@
 <template>
   <div
     :class="[
-      'doc-layout',
+      'sc-layout',
       {
-        'doc-layout-with-sider': row,
+        'sc-layout-with-sider': row,
       },
     ]"
   >
@@ -15,6 +15,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  name: 'SCLayout',
   props: {
     row: Boolean,
   },
@@ -22,9 +23,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.doc-layout {
+.sc-layout {
   display: flex;
   flex-direction: column;
+  background-color: var(--sc-emphasis-bg);
 
   &-with-sider {
     flex-direction: row;

@@ -1,42 +1,37 @@
 <template>
-  <div class="doc-layout-header">
+  <div class="sc-layout-header">
     <div
       v-if="withSidebar"
-      class="doc-sideslip-toggle doc-sidebar-toggle"
+      class="sc-sideslip-toggle sc-sidebar-toggle"
       @click="emit('sidebar-toggle')"
     >
       <i class="hsi hsi-list"></i>
     </div>
-    <router-link class="doc-brand" to="/">
+    <router-link class="sc-brand" to="/">
       <h1>
         <img :src="logo" alt="" />
         <span>{{ name }}</span>
       </h1>
     </router-link>
     <div
-      class="doc-sideslip-toggle doc-topnav-toggle"
+      class="sc-sideslip-toggle sc-topnav-toggle"
       @click="topbarVisible = true"
     >
       <i class="hsi hsi-three-dots"></i>
     </div>
-    <DocSideslip title="导航" side="right" v-model:visible="topbarVisible">
-      <DocTopnav @link-click="topbarVisible = false"></DocTopnav>
-    </DocSideslip>
+    <SCSideslip title="导航" side="right" v-model:visible="topbarVisible">
+      <SCTopnav @link-click="topbarVisible = false"></SCTopnav>
+    </SCSideslip>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, inject, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import DocSideslip from './Sideslip.vue'
-import DocTopnav from './Topnav.vue'
-import type { MergedConfig } from '../../../node/config-type'
+import type { MergedConfig } from '../../node/config-type'
 
 export default defineComponent({
-  components: {
-    DocSideslip,
-    DocTopnav,
-  },
+  name: 'SCHeader',
   emits: ['sidebar-toggle'],
   setup(_, { emit }) {
     const {
@@ -64,26 +59,26 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.doc-layout-header {
+.sc-layout-header {
   position: sticky;
   top: 0;
   z-index: 120;
   box-sizing: border-box;
   display: flex;
-  height: var(--doc-navbar-height);
+  height: var(--sc-navbar-height);
   padding: 0 24px;
-  border-bottom: 1px solid var(--doc-border-color);
-  background-color: var(--doc-emphasis-bg);
+  border-bottom: 1px solid var(--sc-border-color);
+  background-color: var(--sc-emphasis-bg);
 
   @media (max-width: 768px) {
     padding: 0 16px;
   }
 }
 
-.doc-brand {
+.sc-brand {
   display: flex;
   align-items: center;
-  color: var(--doc-emphasis-color);
+  color: var(--sc-emphasis-color);
   text-decoration: none;
 
   h1 {
@@ -99,18 +94,18 @@ export default defineComponent({
     margin-right: 8px;
   }
   span {
-    font-size: var(--doc-text-base);
+    font-size: var(--sc-text-base);
     font-weight: 600;
   }
 }
 
-.doc-sideslip-toggle {
+.sc-sideslip-toggle {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   padding: 0 10px;
-  font-size: var(--doc-text-lg);
+  font-size: var(--sc-text-lg);
   cursor: pointer;
   opacity: 0.8;
 
@@ -123,11 +118,11 @@ export default defineComponent({
   }
 }
 
-.doc-sidebar-toggle {
+.sc-sidebar-toggle {
   margin-right: auto;
 }
 
-.doc-topnav-toggle {
+.sc-topnav-toggle {
   margin-left: auto;
 }
 </style>

@@ -8,8 +8,8 @@ function fencePlugin(md: MarkdownIt) {
 
   const fence = md.renderer.rules.fence!
   md.renderer.rules.fence = (...args) => {
-    const code = fence(...args)
-    return `<div class="doc-code-wrapper">${code}</div>`
+    const code = fence(...args).replace(/{/g, '&lbrace;')
+    return `<div class="sc-code-wrapper">${code}</div>`
   }
 }
 

@@ -20,3 +20,9 @@ declare module 'virtual:mobile' {
   const url: string
   export default url
 }
+
+declare module 'virtual:theme' {
+  import { type Theme } from './node/config-type.js'
+  const theme: Theme
+  export default theme
+}

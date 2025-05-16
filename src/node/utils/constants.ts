@@ -35,3 +35,6 @@ export const RESOLVED_VIRTUAL_MOBILE = '\0' + VIRTUAL_MOBILE
 
 export const VIRTUAL_META = 'virtual:meta'
 export const RESOLVED_VIRTUAL_META = '\0' + VIRTUAL_META
+
+export const VIRTUAL_THEME = 'virtual:theme'
+export const RESOLVED_VIRTUAL_THEME = '\0' + VIRTUAL_THEME

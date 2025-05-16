@@ -4,7 +4,7 @@ function getDom(context: Element) {
   return [...context.querySelectorAll('h2, h3, h4')].map((heading) => {
     return `<li data-level="${heading.nodeName.slice(
       1,
-    )}"><a class="doc-catalog-link" href="#${
+    )}"><a class="sc-catalog-link" href="#${
       heading.id
     }">${heading.textContent!.replace(/#/g, '')}</a></li>`
   })
@@ -14,7 +14,7 @@ export function useDom() {
   const dom = ref<string[]>([])
 
   onMounted(() => {
-    const mainEl = document.querySelector('.doc-layout-main')
+    const mainEl = document.querySelector('.sc-layout-main')
     let observer: MutationObserver | null = null
 
     if (mainEl) {

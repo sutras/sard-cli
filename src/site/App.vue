@@ -14,7 +14,7 @@ export default defineComponent({
   setup() {
     useTheme()
 
-    useHash(`.doc-anchor, .doc-catalog-link`, (id) => {
+    useHash(`.sc-anchor, .sc-catalog-link`, (id) => {
       channel.emit('scrollTo', id)
     })
   },

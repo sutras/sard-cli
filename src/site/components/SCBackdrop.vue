@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      `doc-backdrop`,
+      `sc-backdrop`,
       {
         show: innerVisible,
       },
@@ -15,6 +15,7 @@
 import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
+  name: 'SCBackdrop',
   props: {
     visible: Boolean,
   },
@@ -37,7 +38,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.doc-backdrop {
+.sc-backdrop {
   position: fixed;
   top: 0;
   left: 0;

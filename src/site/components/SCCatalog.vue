@@ -1,15 +1,16 @@
 <template>
-  <div v-if="visible" class="doc-catalog">
+  <div v-if="visible" class="sc-catalog">
     <ul v-html="finalDom"></ul>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useDom } from './useDom'
-import { useScrollSpy } from './useScrollSpy'
+import { useDom } from '../use/useDom'
+import { useScrollSpy } from '../use/useScrollSpy'
 
 export default defineComponent({
+  name: 'SCCatalog',
   setup() {
     const dom = useDom()
     const index = useScrollSpy(dom)
@@ -22,7 +23,7 @@ export default defineComponent({
       return dom.value
         .map((item, i) => {
           return i === index.value
-            ? item.replace('doc-catalog-link', 'doc-catalog-link active')
+            ? item.replace('sc-catalog-link', 'sc-catalog-link active')
             : item
         })
         .join('')
@@ -44,12 +45,12 @@ export default defineComponent({
 $vertical-gap: 3px !default;
 $indent-gap: 16px !default;
 
-.doc-catalog {
+.sc-catalog {
   position: sticky;
-  top: var(--doc-navbar-height);
+  top: var(--sc-navbar-height);
   box-sizing: border-box;
   width: 200px;
-  height: calc(100vh - var(--doc-navbar-height));
+  height: calc(100vh - var(--sc-navbar-height));
   padding: 24px 24px 24px 0;
   overflow-y: auto;
 
@@ -58,7 +59,7 @@ $indent-gap: 16px !default;
     margin-bottom: 0;
     padding-left: 0;
     list-style: none;
-    font-size: var(--doc-text-xs);
+    font-size: var(--sc-text-xs);
 
     ul {
       margin-top: $vertical-gap;
@@ -72,8 +73,8 @@ $indent-gap: 16px !default;
       display: none;
       margin-bottom: 5px;
       padding-bottom: 5px;
-      border-bottom: 1px solid var(--doc-border-color);
-      font-size: var(--doc-text-base);
+      border-bottom: 1px solid var(--sc-border-color);
+      font-size: var(--sc-text-base);
     }
     &[data-level='2'] {
       ~ [data-level='3'] {
@@ -87,23 +88,23 @@ $indent-gap: 16px !default;
   }
 
   a {
-    color: var(--doc-tertiary-color);
+    color: var(--sc-tertiary-color);
     text-decoration: none;
     word-break: break-all;
 
     &:hover {
-      color: var(--doc-emphasis-color);
+      color: var(--sc-emphasis-color);
       text-decoration: underline;
     }
 
     &.active {
-      color: var(--doc-primary);
+      color: var(--sc-primary);
     }
   }
 }
 
 @media (max-width: 1440px) {
-  .doc-catalog {
+  .sc-catalog {
     display: none;
   }
 }

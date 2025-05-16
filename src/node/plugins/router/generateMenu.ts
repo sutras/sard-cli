@@ -76,7 +76,7 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
         children: items,
         path: `/${segments[0]}`,
         id: ++count,
-        file: '@@/components/layout/Trunking.vue',
+        file: '@@/components/SCTrunking.vue',
       }
       categories.push(category)
     } else {
@@ -110,7 +110,7 @@ export function generateMenu(baseRoutes: BaseRoute[]) {
           path: '',
           children: groupChildren,
           id: ++count,
-          file: '@@/components/layout/Trunking.vue',
+          file: '@@/components/SCTrunking.vue',
         }
         items.push(itemGroup)
       } else {

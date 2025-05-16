@@ -1,22 +1,22 @@
 <template>
-  <DocBackdrop v-model:visible="innerVisible"></DocBackdrop>
+  <SCBackdrop v-model:visible="innerVisible"></SCBackdrop>
 
   <div
     :class="[
-      'doc-sideslip',
-      `doc-sideslip-${side}`,
+      'sc-sideslip',
+      `sc-sideslip-${side}`,
       {
         show: innerVisible,
       },
     ]"
   >
-    <div class="doc-sideslip-header">
-      <div class="doc-sideslip-title">{{ title }}</div>
-      <div class="doc-sideslip-close" @click="innerVisible = false">
+    <div class="sc-sideslip-header">
+      <div class="sc-sideslip-title">{{ title }}</div>
+      <div class="sc-sideslip-close" @click="innerVisible = false">
         <i class="hsi hsi-x-lg"></i>
       </div>
     </div>
-    <div class="doc-sideslip-body">
+    <div class="sc-sideslip-body">
       <slot></slot>
     </div>
   </div>
@@ -24,13 +24,10 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import DocBackdrop from './Backdrop.vue'
-import { useResize } from '../../use/useResize'
+import { useResize } from '../use/useResize'
 
 export default defineComponent({
-  components: {
-    DocBackdrop,
-  },
+  name: 'SCSideslip',
   props: {
     title: String,
     visible: Boolean,
@@ -64,7 +61,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.doc-sideslip {
+.sc-sideslip {
   @media (max-width: 768px) {
     position: fixed;
     top: 0;
@@ -73,8 +70,8 @@ export default defineComponent({
     width: 320px;
     max-width: 80vw;
     height: 100vh;
-    background-color: var(--doc-emphasis-bg);
-    box-shadow: var(--doc-shadow-xl);
+    background-color: var(--sc-emphasis-bg);
+    box-shadow: var(--sc-shadow-xl);
     transition: transform 300ms;
 
     &-left {
@@ -103,12 +100,12 @@ export default defineComponent({
         right: 24px;
         bottom: 0;
         content: '';
-        border-bottom: 1px var(--doc-border-color) solid;
+        border-bottom: 1px var(--sc-border-color) solid;
       }
     }
 
     &-title {
-      font-size: var(--doc-text-base);
+      font-size: var(--sc-text-base);
       font-weight: bold;
     }
 
@@ -119,7 +116,7 @@ export default defineComponent({
       margin: -16px -24px;
       margin-left: auto;
       padding: 16px 24px;
-      font-size: var(--doc-text-base);
+      font-size: var(--sc-text-base);
       cursor: pointer;
       opacity: 0.8;
 

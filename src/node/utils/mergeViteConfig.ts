@@ -7,6 +7,7 @@ import { VitePluginSardConfig } from '../plugins/VitePluginSardConfig.js'
 import { VitePluginRouter } from '../plugins/VitePluginRouter.js'
 import { VitePluginMarkdown } from '../plugins/VitePluginMarkdown.js'
 import { VitePluginMobile } from '../plugins/VitePluginMobile.js'
+import { VitePluginTheme } from '../plugins/VitePluginTheme.js'
 import { VitePluginGithubPages404 } from '../plugins/VitePluginGithubPages404.js'
 import {
   VitePluginRestart,
@@ -35,6 +36,7 @@ export function mergeViteConfig(
       VitePluginRouter(),
       VitePluginMarkdown(),
       VitePluginMobile(),
+      VitePluginTheme(),
       createVuePlugin({
         include: [/.vue$/, /.md$/],
       }),

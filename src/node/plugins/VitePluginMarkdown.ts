@@ -8,39 +8,35 @@ import anchorPlugin, { resetIdMap } from './md-plugins/anchorPlugin.js'
 import fencePlugin from './md-plugins/fencePlugin.js'
 import { FrontMatter } from '../../common-type.js'
 
-function escape(code: string) {
-  const html = code
-    // 转义模板字符串
-    .replace(/([`\\])/g, '\\$1')
-
-    // 转义大括号
-    .replace(/([{}])/g, (m) => {
-      return `&#${m.charCodeAt(0)};`
-    })
-
-  return html
+function extractScript(code: string) {
+  const scripts: string[] = []
+  const template = code.replace(/^<script[\s\S]+?^<\/script>/gm, (m) => {
+    scripts.push(m)
+    return ''
+  })
+  return {
+    template,
+    scripts,
+  }
 }
 
 function transform(code: string, id: string, md: MarkdownIt) {
-  const fmResult = fm<FrontMatter>(code)
+  const { scripts, template } = extractScript(code)
+  const fmResult = fm<FrontMatter>(template)
 
   const fmBody = compileAtRule(id, fmResult.body)
   const fmAttrs = fmResult.attributes
 
   resetIdMap()
-  let html = md.render(fmBody)
-  html = escape(html)
+  const html = md.render(fmBody)
 
-  const content = `<script setup lang="ts">
-      import Markdown from "@@/components/markdown/index.vue"
-      const html = \`${html}\`
-      const fm = ${JSON.stringify(fmAttrs)}
-    </script>
+  const tpl = fmAttrs.disableMarkdownLayout
+    ? html
+    : `<SCMarkdown>${html}</SCMarkdown>`
 
-    <template>
-      <Markdown :content="html" :fm="fm" />
-    </template>
-  `
+  const content = `<template>
+  <SCFrontMatterProvider front-matter="${encodeURIComponent(JSON.stringify(fmAttrs))}">${tpl}</SCFrontMatterProvider>
+  </template>\n${scripts.join('\n')}`
 
   return content
 }

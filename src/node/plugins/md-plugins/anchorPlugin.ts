@@ -50,7 +50,7 @@ function anchorPlugin(md: MarkdownIt) {
       const linkTokens = [
         Object.assign(new Token('link_open', 'a', 1), {
           attrs: [
-            ['class', 'doc-anchor'],
+            ['class', 'sc-anchor'],
             ['href', `#${id}`],
           ],
         }),

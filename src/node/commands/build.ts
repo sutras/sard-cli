@@ -30,7 +30,9 @@ async function deleteOutDir() {
 }
 
 async function copySrcToDist(pattern: string) {
-  const result = await glob(path.resolve(srcDir, pattern).replace(/\\/g, '/'))
+  const result = await glob(path.resolve(srcDir, pattern).replace(/\\/g, '/'), {
+    ignore: '.sard/**/*',
+  })
   const targetResult = result.map((file) =>
     path.resolve(outDir, '.' + file.replace(srcDir, '')),
   )
@@ -51,7 +53,7 @@ const tsconfigPath = path.resolve(tempDir, '__temp-tsconfig.sard.json')
 
 const vueTsconfig = {
   include: [`${srcDir}/**/*`],
-  exclude: [`${srcDir}/**/test/*`],
+  exclude: [`${srcDir}/**/test/**/*`, `${srcDir}/**/.sard/**/*`],
   compilerOptions: {
     target: 'esnext',
     resolveJsonModule: true,
@@ -180,6 +182,9 @@ function doCompileVue(code: string, filePath: string) {
 async function compileVue() {
   const result = await glob(
     path.resolve(srcDir, './**/*.vue').replace(/\\/g, '/'),
+    {
+      ignore: '.sard/**/*',
+    },
   )
   const targetResult = result.map((file) =>
     path.resolve(outDir, '.' + file.replace(srcDir, '')),

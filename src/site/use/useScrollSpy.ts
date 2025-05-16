@@ -32,7 +32,7 @@ export function useScrollSpy(dom: Ref<string[]>) {
   watch(
     dom,
     () => {
-      const mainEl = document.querySelector('.doc-layout-main')
+      const mainEl = document.querySelector('.sc-layout-main')
       if (mainEl) {
         leadings.value = [...mainEl.querySelectorAll('h2, h3, h4')]
       }

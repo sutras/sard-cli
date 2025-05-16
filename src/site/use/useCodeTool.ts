@@ -14,7 +14,7 @@ function generateTool(wrapper: Element) {
   const button = document.createElement('button') as HTMLButtonElement & {
     timer: number
   }
-  button.classList.add('doc-copy')
+  button.classList.add('sc-copy')
   wrapper.insertBefore(button, wrapper.firstChild)
 
   const clipboard = new Clipboard(button, {
@@ -22,16 +22,16 @@ function generateTool(wrapper: Element) {
   })
 
   clipboard.on('success', () => {
-    button.classList.add('doc-copied')
+    button.classList.add('sc-copied')
     clearTimeout(button.timer)
     button.timer = window.setTimeout(() => {
-      button.classList.remove('doc-copied')
+      button.classList.remove('sc-copied')
     }, 1000)
   })
 }
 
 function destroyTool(wrapper: Element) {
-  const button = wrapper.querySelector('.doc-copy')
+  const button = wrapper.querySelector('.sc-copy')
   if (button) {
     button.remove()
   }
@@ -39,9 +39,7 @@ function destroyTool(wrapper: Element) {
 
 export function useCodeTool() {
   onMounted(() => {
-    const allWrapper = Array.from(
-      document.querySelectorAll('.doc-code-wrapper'),
-    )
+    const allWrapper = Array.from(document.querySelectorAll('.sc-code-wrapper'))
 
     allWrapper.forEach((wrapper) => generateTool(wrapper))
 

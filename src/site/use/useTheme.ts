@@ -7,7 +7,7 @@ export type ThemeType = 'dark' | 'light' | 'auto'
 const defaulTheme = (window.localStorage.getItem(themeKey) ||
   'auto') as ThemeType
 
-document.documentElement.dataset.docTheme = defaulTheme
+document.documentElement.dataset.scTheme = defaulTheme
 
 export interface ThemeContext {
   theme: Ref<ThemeType>
@@ -51,7 +51,7 @@ export default function useTheme() {
   watch(
     currentTheme,
     () => {
-      document.documentElement.dataset.docTheme = currentTheme.value
+      document.documentElement.dataset.scTheme = currentTheme.value
     },
     {
       immediate: true,

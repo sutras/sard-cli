@@ -16,8 +16,7 @@ async function loadRouter(baseRoutes: BaseRoute[]) {
   const routesStr = generateRoutes(baseRoutes)
 
   const code = `import { createRouter, createWebHistory } from "vue-router"
-import BasicLayout from '@@/components/layout/BasicLayout.vue'
-import Trunking from '@@/components/layout/Trunking.vue'
+import BasicLayout from '@@/components/BasicLayout.vue'
 
 const router = createRouter({
   history: createWebHistory('${sardConfig.base}'),

@@ -1,5 +1,6 @@
 import { type DeepRequired } from 'utility-types'
 import { type HtmlTagDescriptor } from 'vite'
+import { type App } from 'vue'
 
 export type Route = {
   /**
@@ -165,4 +166,8 @@ export interface UserConfig {
 
 export type MergedConfig = DeepRequired<Omit<UserConfig, 'site'>> & {
   site: Required<NonNullable<UserConfig['site']>>
+}
+
+export interface Theme {
+  enhanceApp?: (ctx: { app: App }) => any
 }

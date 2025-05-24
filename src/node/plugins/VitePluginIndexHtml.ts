@@ -4,6 +4,7 @@ import { sardConfig } from '../getSardConfig.js'
 
 const {
   site: { logo, seo, tags },
+  base,
 } = sardConfig
 
 export function VitePluginIndexHtml(): Plugin {
@@ -30,7 +31,7 @@ export function VitePluginIndexHtml(): Plugin {
             attrs: {
               rel: 'icon',
               type: mime.getType(logo)!,
-              href: logo,
+              href: base.replace(/\/$/, '') + '/' + logo.replace(/^\//, ''),
             },
           },
         ],

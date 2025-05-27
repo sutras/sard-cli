@@ -161,6 +161,22 @@ export interface UserConfig {
      * 页面底部的版权信息
      */
     copyright?: string
+    /**
+     * 头部导航链接
+     */
+    nav?: (
+      | {
+          text: string
+          link: string
+        }
+      | {
+          text: string
+          items: {
+            text: string
+            link: string
+          }[]
+        }
+    )[]
   }
 }
 

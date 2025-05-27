@@ -13,16 +13,27 @@
       </li>
     </template>
     <li class="sc-topnav-divide"></li>
-    <li class="sc-topnav-item">
-      <a
-        class="sc-topnav-link"
-        target="_blank"
-        rel="noreferrer"
-        :href="`${mainRepository.url}/blob/main/CHANGELOG.md`"
-      >
-        更新日志
-      </a>
-    </li>
+    <template v-for="item in nav" :key="item.text">
+      <li class="sc-topnav-item">
+        <a
+          v-if="'link' in item"
+          class="sc-topnav-link"
+          target="_blank"
+          rel="noreferrer"
+          :href="`${mainRepository.url}/blob/main/CHANGELOG.md`"
+        >
+          {{ item.text }}
+        </a>
+        <SCDropdown v-else :options="item.items">
+          <template #default="{ toggle, open }">
+            <span class="sc-topnav-link" :class="{ open }" @click="toggle">
+              {{ item.text }}
+              <span class="sc-topnav-arrow hsi hsi-chevron-down"></span>
+            </span>
+          </template>
+        </SCDropdown>
+      </li>
+    </template>
     <li class="sc-topnav-divide"></li>
     <template v-for="item in git" :key="item.name">
       <li v-if="item.url" class="sc-topnav-item">
@@ -39,9 +50,10 @@
     </template>
     <li class="sc-topnav-divide"></li>
     <li class="sc-topnav-item">
-      <SCTheme class="sc-topnav-theme">
-        <span class="sc-topnav-icon-text">切换主题</span>
-      </SCTheme>
+      <div class="sc-topnav-theme">
+        <span class="sc-topnav-theme-text">主题</span>
+        <SCTheme />
+      </div>
     </li>
   </ul>
 </template>
@@ -58,7 +70,10 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
 
-    const { git } = inject<MergedConfig>('sardConfig')!
+    const {
+      git,
+      site: { nav },
+    } = inject<MergedConfig>('sardConfig')!
 
     const secondLevelRoutes = router.options.routes[0].children
 
@@ -71,6 +86,7 @@ export default defineComponent({
     return {
       emit,
       git,
+      nav,
       secondLevelRoutes,
       getActiveClass,
       mainRepository,
@@ -79,7 +95,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .sc-topnav {
   display: flex;
   align-items: center;
@@ -92,8 +108,17 @@ export default defineComponent({
   list-style: none;
 
   &-item {
+    position: relative;
     display: flex;
+    align-items: center;
     height: 100%;
+
+    &:hover {
+      .sc-dropdown {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
   }
 
   &-link {
@@ -107,6 +132,7 @@ export default defineComponent({
     font-size: var(--sc-text-sm);
     color: inherit;
     text-decoration: none;
+    cursor: pointer;
     &:hover {
       color: var(--sc-emphasis-color);
       text-decoration: none;
@@ -115,6 +141,12 @@ export default defineComponent({
       font-weight: bold;
       color: var(--sc-emphasis-color);
     }
+  }
+
+  &-arrow {
+    font-size: var(--sc-text-xs);
+    margin-left: 4px;
+    vertical-align: middle;
   }
 
   &-divide {
@@ -133,36 +165,64 @@ export default defineComponent({
     margin-left: 10px;
   }
 
+  &-theme-text {
+    font-size: var(--sc-text-sm);
+    display: none;
+  }
+
   @media (max-width: 768px) {
+    flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
     padding: 16px 24px;
 
     &-item {
-      width: 50%;
+      flex-direction: column;
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--sc-border-color);
+      }
     }
 
     &-link {
+      box-sizing: border-box;
       width: 100%;
-      justify-content: flex-start;
-      padding: 8px 0;
+      justify-content: space-between;
+      padding: 12px 0;
       font-size: var(--sc-text-base);
+      &:active {
+        opacity: 0.6;
+      }
+
+      &.open {
+        padding-bottom: 6px;
+        .sc-topnav-arrow {
+          transform: rotateX(180deg);
+        }
+      }
     }
 
     &-divide {
-      width: 100%;
-      height: 1px;
-      margin: 16px 0;
+      display: none;
     }
 
     &-icon-text {
       display: flex;
+      font-size: var(--sc-text-sm);
     }
 
-    .sc-topnav-theme {
-      justify-content: flex-start;
+    &-theme {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
-      padding: 0;
+      margin-top: 12px;
+      border-radius: var(--sc-rounded);
+      padding: 12px 14px 12px 16px;
+      background-color: var(--sc-secondary-bg);
+    }
+    &-theme-text {
+      display: block;
     }
   }
 }

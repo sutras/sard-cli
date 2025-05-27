@@ -45,6 +45,7 @@ const defaultConfig: MergedConfig = {
     homePath: '/home',
     notFoundPath: '',
     copyright: '',
+    nav: [],
   },
 }
 

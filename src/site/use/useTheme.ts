@@ -4,6 +4,8 @@ const themeKey = 'sardTheme'
 
 export type ThemeType = 'dark' | 'light' | 'auto'
 
+export type CurrentThemeType = 'dark' | 'light'
+
 const defaulTheme = (window.localStorage.getItem(themeKey) ||
   'auto') as ThemeType
 
@@ -11,11 +13,12 @@ document.documentElement.dataset.scTheme = defaulTheme
 
 export interface ThemeContext {
   theme: Ref<ThemeType>
+  currentTheme: Ref<CurrentThemeType>
 }
 
 export default function useTheme() {
-  const theme = ref(defaulTheme)
-  const currentTheme = ref(theme.value)
+  const theme = ref<ThemeType>(defaulTheme)
+  const currentTheme = ref<CurrentThemeType>()
 
   const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -60,5 +63,6 @@ export default function useTheme() {
 
   provide('theme', {
     theme,
+    currentTheme,
   })
 }

@@ -31,7 +31,7 @@ export function VitePluginIndexHtml(): Plugin {
             attrs: {
               rel: 'icon',
               type: mime.getType(logo)!,
-              href: base.replace(/\/$/, '') + '/' + logo.replace(/^\//, ''),
+              href: base + logo.replace(/^\//, ''),
             },
           },
         ],

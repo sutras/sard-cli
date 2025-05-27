@@ -3,6 +3,7 @@ import SCAlert from './SCAlert.vue'
 import SCBackdrop from './SCBackdrop.vue'
 import SCCatalog from './SCCatalog.vue'
 import SCContent from './SCContent.vue'
+import SCDropdown from './SCDropdown.vue'
 import SCFooter from './SCFooter.vue'
 import SCFrontMatterProvider from './SCFrontMatterProvider.vue'
 import SCHeader from './SCHeader.vue'
@@ -22,6 +23,7 @@ const components = [
   SCBackdrop,
   SCCatalog,
   SCContent,
+  SCDropdown,
   SCFooter,
   SCFrontMatterProvider,
   SCHeader,

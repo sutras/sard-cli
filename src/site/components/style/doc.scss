@@ -120,17 +120,16 @@
       }
     }
   }
+}
 
-  sup {
-    display: inline-block;
-    padding: 2px 4px;
-    font-size: var(--sc-text-xs);
-    font-family: var(--sc-font-sans-serif);
-    line-height: 1.2;
-    font-weight: 500;
-    color: var(--sc-primary);
-    border-radius: var(--sc-rounded-xs);
-    background-color: rgba(var(--sc-primary-rgb), 0.1);
-    transform: translateY(4px);
-  }
+sup {
+  display: inline-block;
+  padding: 2px;
+  font-size: var(--sc-text-xs);
+  font-family: var(--sc-font-sans-serif);
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--sc-primary);
+  border-radius: var(--sc-rounded-sm);
+  background-color: rgba(var(--sc-primary-rgb), 0.1);
 }

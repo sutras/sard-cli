@@ -207,12 +207,6 @@ export default defineComponent({
 
     sup {
       margin-left: 2px;
-      padding: 2px;
-      font-size: var(--sc-text-xs);
-      line-height: 1;
-      color: var(--sc-white);
-      border-radius: var(--sc-rounded-sm);
-      background-color: var(--sc-primary);
     }
   }
 }

@@ -75,16 +75,6 @@ export default defineComponent({
     margin: 24px 0 32px;
     font-size: var(--sc-text-2xl);
     font-weight: bold;
-
-    sup {
-      margin-left: 4px;
-      padding: 2px 6px;
-      font-size: var(--sc-text-sm);
-      line-height: 1.2;
-      color: var(--sc-white);
-      border-radius: var(--sc-rounded);
-      background-color: var(--sc-primary);
-    }
   }
 
   h2 {

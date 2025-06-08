@@ -1,10 +1,11 @@
 import path from 'path'
 import shell from 'shelljs'
 import { CWD } from '../utils/constants.js'
+import { pathToFileURL } from 'node:url'
 
 export async function tag() {
   await new Promise<void>((resolve, reject) => {
-    import(path.resolve(CWD, 'package.json'), {
+    import(pathToFileURL(path.resolve(CWD, 'package.json')).href, {
       with: {
         type: 'json',
       },

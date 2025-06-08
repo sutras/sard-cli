@@ -1,6 +1,6 @@
 {
   "name": "sard-cli",
-  "version": "1.2.0",
+  "version": "1.2.4",
   "description": "Sard CLI 是一个基于 vite 实现的 uniapp 组件库构建工具，通过 Sard CLI 可以快速搭建一套功能完备的 Vue 组件库。",
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
@@ -76,9 +76,6 @@
     "tsx": "^4.19.2",
     "typescript-eslint": "^8.17.0",
     "utility-types": "^3.11.0",
-    "vite": "^5.0.11"
-  },
-  "peerDependencies": {
-    "vite": "^5.0.11"
+    "vite": "^6.3.5"
   }
 }

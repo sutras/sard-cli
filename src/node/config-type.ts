@@ -65,6 +65,10 @@ export interface UserConfig {
      * uni_modules 插件名
      */
     uniName?: string
+    /**
+     * 组件类型所在的 readme 文件
+     */
+    mapReadme?: Record<string, string>
   }
   /**
    * 定义在 .md 文件 @code 规则中的路径别名

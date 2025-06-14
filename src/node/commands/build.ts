@@ -9,12 +9,16 @@ import { rimraf } from 'rimraf'
 import * as compiler from 'vue/compiler-sfc'
 import esbuild from 'esbuild'
 import { sardConfig } from '../getSardConfig.js'
+import { camelCase, upperFirst } from 'lodash-es'
 
 const { build: buildConfig } = sardConfig
 
 const outDir = path.resolve(CWD, buildConfig.outDir)
 const srcDir = path.resolve(CWD, buildConfig.srcDir)
 const uniModulesDir = path.resolve(CWD, buildConfig.uniModulesDir)
+const uniPluginDir = path.resolve(uniModulesDir, buildConfig.uniName)
+
+const srcIgnore = '.sard/**/*'
 
 async function deleteOutDir() {
   const content = await fsp.readFile(path.resolve(CWD, '.gitignore'), {
@@ -31,7 +35,7 @@ async function deleteOutDir() {
 
 async function copySrcToDist(pattern: string) {
   const result = await glob(path.resolve(srcDir, pattern).replace(/\\/g, '/'), {
-    ignore: '.sard/**/*',
+    ignore: srcIgnore,
   })
   const targetResult = result.map((file) =>
     path.resolve(outDir, '.' + file.replace(srcDir, '')),
@@ -53,7 +57,7 @@ const tsconfigPath = path.resolve(tempDir, '__temp-tsconfig.sard.json')
 
 const vueTsconfig = {
   include: [`${srcDir}/**/*`],
-  exclude: [`${srcDir}/**/test/**/*`, `${srcDir}/**/.sard/**/*`],
+  exclude: [`${srcDir}/**/test/**/*`, `${srcDir}/**/${srcIgnore}`],
   compilerOptions: {
     target: 'esnext',
     resolveJsonModule: true,
@@ -183,7 +187,7 @@ async function compileVue() {
   const result = await glob(
     path.resolve(srcDir, './**/*.vue').replace(/\\/g, '/'),
     {
-      ignore: '.sard/**/*',
+      ignore: srcIgnore,
     },
   )
   const targetResult = result.map((file) =>
@@ -252,16 +256,191 @@ async function copyChangelog() {
   )
 }
 
-async function generateUniModules() {
-  const pluginDir = path.resolve(uniModulesDir, buildConfig.uniName)
+async function copyReadmeToUni() {
+  const result = await glob(
+    path.resolve(srcDir, './**/*.md').replace(/\\/g, '/'),
+    {
+      ignore: srcIgnore,
+    },
+  )
+  const targetResult = result.map((file) =>
+    path.resolve(uniPluginDir, '.' + file.replace(srcDir, '')),
+  )
 
-  if (!uniModulesDir.includes('uni_modules')) {
-    throw Error(`${uniModulesDir} 不包含 'uni_modules'，有删除重要文件的风险`)
+  await Promise.all(
+    result.map(async (source, index) => {
+      const target = targetResult[index]
+      const targetPath = path.dirname(target)
+      if (!fse.existsSync(targetPath)) {
+        fse.mkdirsSync(targetPath)
+      }
+      await fse.copyFile(source, target)
+    }),
+  )
+}
+
+function doParseMdTable(tableStr: string) {
+  const match = tableStr.match(/^\|.+?$/gm)
+  return match
+    ? match
+        .slice(2)
+        .map((item) => item.replace(/^\s*\|\s*|\s*\|\s*$/g, ''))
+        .map((item) => item.split(/\s*(?<!\\)\|\s*/))
+    : []
+}
+
+function parseMdPropsTable(tableStr: string) {
+  return doParseMdTable(tableStr).map(([prop, desc, type, defaultValue]) => {
+    return [
+      camelCase(prop.match(/^[\w-]+/)?.[0] || ''),
+      desc,
+      type.replace(/\\\|/g, '|'),
+      defaultValue,
+    ]
+  })
+}
+
+function parseMdEmitsTable(tableStr: string) {
+  return doParseMdTable(tableStr).map(([prop, desc, type]) => {
+    return [prop.match(/^[\w-]+/)?.[0] || '', desc, type.replace(/\\\|/g, '|')]
+  })
+}
+
+function parseMdTable(tableStr: string, title: string) {
+  return title.endsWith('Props')
+    ? parseMdPropsTable(tableStr)
+    : parseMdEmitsTable(tableStr)
+}
+
+function getMdTableStr(content: string, title: string) {
+  return (
+    content.match(new RegExp(`\\n### ${title}\\b[\\s\\S]+?(?=\\n#|$)`, 'g')) ||
+    []
+  )
+}
+
+async function parseMdTableByTitle(
+  file: string,
+  title: string,
+  content?: string,
+) {
+  const tableArr: string[][] = []
+
+  if (typeof content === 'undefined') {
+    if (!fse.existsSync(file)) {
+      return tableArr
+    }
+    content = await fsp.readFile(file, {
+      encoding: 'utf-8',
+    })
   }
 
-  await rimraf(pluginDir)
-  fse.mkdirsSync(pluginDir)
-  fse.copy(outDir, path.resolve(pluginDir))
+  const tableStrList = getMdTableStr(content, title)
+
+  for (const tableStr of tableStrList) {
+    const match = tableStr.match(/继承 \[`(.*?)`\]\((.+?|)#(.+?)\)/)
+    // 继承
+    if (match) {
+      const [, , relativePath, extendTitle] = match
+
+      // 其他文件
+      if (relativePath) {
+        const extendFile = path.resolve(
+          path.dirname(file),
+          '..',
+          relativePath,
+          'README.md',
+        )
+        tableArr.push(...(await parseMdTableByTitle(extendFile, extendTitle)))
+      }
+      // 当前文件
+      else {
+        tableArr.push(
+          ...(await parseMdTableByTitle(file, extendTitle, content)),
+        )
+      }
+    }
+
+    tableArr.push(...parseMdTable(tableStr, title))
+  }
+
+  return tableArr
+}
+
+function deduplicateMdTable(table: string[][]) {
+  return Object.values(Object.fromEntries(table.map((row) => [row[0], row])))
+}
+
+async function generateUniPropsType() {
+  const result = await glob(
+    path
+      .resolve(path.resolve(uniPluginDir, 'components'), './**/*.vue')
+      .replace(/\\/g, '/'),
+  )
+  return Promise.all(
+    result.map(async (file) => {
+      const content = await fsp.readFile(file, {
+        encoding: 'utf-8',
+      })
+
+      const filename = path.basename(file, '.vue')
+
+      let targetFile = ''
+      const propsName = upperFirst(camelCase(filename)) + 'Props'
+      const emitsName = upperFirst(camelCase(filename)) + 'Emits'
+      const dir = path.dirname(file)
+      const readmeFile = path.resolve(dir, 'README.md')
+
+      if (fse.existsSync(readmeFile)) {
+        targetFile = readmeFile
+      } else {
+        const relativeDir = buildConfig.mapReadme[filename]
+        if (relativeDir) {
+          targetFile = path.resolve(dir, relativeDir, 'README.md')
+        }
+      }
+
+      if (targetFile && fse.existsSync(targetFile)) {
+        const propTable = deduplicateMdTable(
+          await parseMdTableByTitle(targetFile, propsName),
+        )
+        const eventTable = deduplicateMdTable(
+          await parseMdTableByTitle(targetFile, emitsName),
+        )
+
+        const docs: string[] = ['/**']
+
+        propTable.forEach(([prop, desc, type, defaultValue]) => {
+          docs.push(
+            ` * @property {${type}} ${prop} ${desc}，默认值：${defaultValue}。`,
+          )
+        })
+
+        eventTable.forEach(([prop, desc, type]) => {
+          docs.push(` * @event {${type}} ${prop} ${desc}`)
+        })
+
+        docs.push(' */')
+        const docsStr = docs.join('\n')
+
+        const newContent = content.replace('export default', `${docsStr}\n$&`)
+
+        await fsp.writeFile(file, newContent)
+      }
+    }),
+  )
+}
+
+async function generateUniModules() {
+  if (!uniPluginDir.includes('uni_modules')) {
+    throw Error(`${uniPluginDir} 不包含 'uni_modules'，有删除重要文件的风险`)
+  }
+
+  await rimraf(uniPluginDir)
+  fse.mkdirsSync(uniPluginDir)
+  await fse.copy(outDir, path.resolve(uniPluginDir))
+  await copyReadmeToUni()
+  await generateUniPropsType()
 }
 
 export async function build() {

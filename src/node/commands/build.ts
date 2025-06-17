@@ -242,7 +242,11 @@ async function copyPackageJson() {
   )
 }
 
-async function copyReadme() {
+async function copyComponentsReadme() {
+  await copySrcToDist('./components/**/*.md')
+}
+
+async function copyRootReadme() {
   await fse.copyFile(
     path.resolve(CWD, 'README.md'),
     path.resolve(outDir, 'README.md'),
@@ -253,29 +257,6 @@ async function copyChangelog() {
   await fse.copyFile(
     path.resolve(CWD, 'CHANGELOG.md'),
     path.resolve(outDir, 'CHANGELOG.md'),
-  )
-}
-
-async function copyReadmeToUni() {
-  const result = await glob(
-    path.resolve(srcDir, './**/*.md').replace(/\\/g, '/'),
-    {
-      ignore: srcIgnore,
-    },
-  )
-  const targetResult = result.map((file) =>
-    path.resolve(uniPluginDir, '.' + file.replace(srcDir, '')),
-  )
-
-  await Promise.all(
-    result.map(async (source, index) => {
-      const target = targetResult[index]
-      const targetPath = path.dirname(target)
-      if (!fse.existsSync(targetPath)) {
-        fse.mkdirsSync(targetPath)
-      }
-      await fse.copyFile(source, target)
-    }),
   )
 }
 
@@ -374,7 +355,7 @@ function deduplicateMdTable(table: string[][]) {
 async function generateUniPropsType() {
   const result = await glob(
     path
-      .resolve(path.resolve(uniPluginDir, 'components'), './**/*.vue')
+      .resolve(path.resolve(outDir, 'components'), './**/*.vue')
       .replace(/\\/g, '/'),
   )
   return Promise.all(
@@ -439,22 +420,22 @@ async function generateUniModules() {
   await rimraf(uniPluginDir)
   fse.mkdirsSync(uniPluginDir)
   await fse.copy(outDir, path.resolve(uniPluginDir))
-  await copyReadmeToUni()
-  await generateUniPropsType()
 }
 
 export async function build() {
   const steps = [
-    [deleteOutDir, `已删除 ${outDir} 目录`],
-    [compileTsAndGenerateVueType, `已完成 ts 文件编译以及生成 vue 类型文件`],
-    [copyLwa, `已完成 lwa 拷贝`],
-    [compileVue, `已完成 vue 文件编译`],
-    [handleGlobalComponent, `已完成全局组件类型处理`],
-    [copyScss, `已完成 scss 拷贝`],
-    [copyStaticFiles, `已完成静态资源拷贝`],
-    [copyWxs, `已完成 wxs 拷贝`],
-    [copyPackageJson, `已复制 package.json 文件`],
-    [copyReadme, `已复制 README.md 文件`],
+    [deleteOutDir, `删除 ${outDir} 目录`],
+    [compileTsAndGenerateVueType, `编译 ts 文件以及生成 vue 类型文件`],
+    [copyLwa, `拷贝 lwa `],
+    [compileVue, `编译 vue 文件`],
+    [handleGlobalComponent, `全局组件类型处理`],
+    [copyScss, `拷贝 scss 文件`],
+    [copyStaticFiles, `拷贝静态资源`],
+    [copyWxs, `拷贝 wxs 文件`],
+    [copyPackageJson, `复制 package.json 文件`],
+    [copyComponentsReadme, `复制组件 README.md 文件`],
+    [copyRootReadme, `复制根 README.md 文件`],
+    [generateUniPropsType, `生成 HbuilderX 类型提示`],
     [copyChangelog, `已复制 CHANGELOG.md 文件`],
     [generateUniModules, '已完成 uni_modules 目录构建'],
     [null, `已完成所有构建流程`],

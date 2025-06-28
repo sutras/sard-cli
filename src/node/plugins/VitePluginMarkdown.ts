@@ -10,10 +10,13 @@ import { FrontMatter } from '../../common-type.js'
 
 function extractScript(code: string) {
   const scripts: string[] = []
-  const template = code.replace(/^<script[\s\S]+?^<\/script>/gm, (m) => {
-    scripts.push(m)
-    return ''
-  })
+  const template = code.replace(
+    /(?<!```html\n)^<script[\s\S]+?^<\/script>(?!\n```)/gm,
+    (m) => {
+      scripts.push(m)
+      return ''
+    },
+  )
   return {
     template,
     scripts,

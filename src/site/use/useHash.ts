@@ -27,7 +27,7 @@ export default function useHash(
         const el = document.querySelector(targetSelector)
         if (el) {
           window.scrollBy({
-            top: el.getBoundingClientRect().top - 60 - 10,
+            top: el.getBoundingClientRect().top,
             behavior: 'smooth',
           })
           callback?.(targetSelector.replace(/^#/, ''))

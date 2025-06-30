@@ -29,7 +29,7 @@ export default defineComponent({
         const el = document.querySelector(route.hash)
         if (el) {
           window.scrollBy({
-            top: el.getBoundingClientRect().top - 60 - 10,
+            top: el.getBoundingClientRect().top,
             behavior: 'instant',
           })
         }
@@ -99,6 +99,19 @@ export default defineComponent({
   h2,
   h3 {
     color: var(--sc-emphasis-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    &::before {
+      display: block;
+      content: '';
+      padding-top: calc(var(--sc-navbar-height) + 10px);
+      margin-top: calc((var(--sc-navbar-height) + 10px) * -1);
+      pointer-events: none;
+    }
   }
 
   p {

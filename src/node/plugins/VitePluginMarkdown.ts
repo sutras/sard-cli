@@ -45,12 +45,16 @@ function transform(code: string, id: string, md: MarkdownIt) {
 }
 
 export function VitePluginMarkdown(): Plugin {
+  const currentId = {
+    value: '',
+  }
+
   const md = new MarkdownIt({
     html: true,
     xhtmlOut: true,
   })
 
-  md.use(tablePlugin)
+  md.use(tablePlugin, currentId)
   md.use(anchorPlugin)
   md.use(fencePlugin)
 
@@ -61,6 +65,7 @@ export function VitePluginMarkdown(): Plugin {
       if (!MD_PATH_R.test(id)) {
         return
       }
+      currentId.value = id
       return transform(code, id, md)
     },
 

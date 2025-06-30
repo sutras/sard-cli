@@ -1,8 +1,9 @@
 import type MarkdownIt from 'markdown-it'
 
-function tablePlugin(md: MarkdownIt) {
+function tablePlugin(md: MarkdownIt, currentId: { value: string }) {
   md.renderer.rules.table_open = () => {
-    return '<div class="sc-table-responsive"><table>'
+    const isComponent = currentId.value.includes('/components/')
+    return `<div class="sc-table-responsive${isComponent ? ' is-component-table' : ''}"><table>`
   }
 
   md.renderer.rules.table_close = () => {

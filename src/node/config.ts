@@ -29,6 +29,7 @@ const defaultConfig: MergedConfig = {
     uniModulesDir: '',
     uniName: '',
     mapReadme: {},
+    multiDefaultExport: [],
   },
   codeAlias: {},
   mobile: false,

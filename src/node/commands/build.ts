@@ -108,6 +108,36 @@ async function compileTsAndGenerateVueType() {
   for (const file of vueDts) {
     await fsp.rename(file, file.replace(/\.vue\.d\.ts$/, '.d.ts'))
   }
+
+  if (buildConfig.multiDefaultExport.length > 0) {
+    buildConfig.multiDefaultExport.forEach((item) => {
+      const file = path.resolve(outDir, item).replace(/\.vue$/, '.d.ts')
+      if (fse.existsSync(path.dirname(file))) {
+        let content = fse.readFileSync(file, {
+          encoding: 'utf-8',
+        })
+
+        const exportNames = (content.match(/export default (\w*)/g) || []).map(
+          (item) => item.replace(/export default /, ''),
+        )
+
+        if (exportNames && exportNames.length > 1) {
+          exportNames.forEach((name) => {
+            const reg = new RegExp(`^declare const ${name}: {\\n`, 'm')
+            if (reg.test(content)) {
+              content = content.replace(
+                new RegExp(`export default ${name}`),
+                (m) => {
+                  return `// ${m}`
+                },
+              )
+            }
+          })
+          fse.outputFileSync(file, content)
+        }
+      }
+    })
+  }
 }
 
 async function copyLwa() {
@@ -130,10 +160,22 @@ function insertComponents(code: string, components: string[]) {
 
 function doCompileVue(code: string, filePath: string) {
   let wxsMatch = ''
-  code = code.replace(/<script.*?lang="wxs".*?><\/script>/, (m) => {
-    wxsMatch = m
-    return ''
-  })
+
+  let renderjsMatch = ''
+
+  code = code
+    .replace(/<script.*?lang="wxs".*?><\/script>/, (m) => {
+      wxsMatch = m
+      return ''
+    })
+    .replace(
+      /<script module="render" lang="renderjs">[\s\S]+<\/script>/,
+      (m) => {
+        renderjsMatch = m
+        return ''
+      },
+    )
+
   const { descriptor } = compiler.parse(code, {
     filename: filePath,
   })
@@ -171,6 +213,11 @@ function doCompileVue(code: string, filePath: string) {
     }
 
     compiledVue += `<script>\n${transformedScript}</script>\n`
+  }
+
+  // renderjs
+  if (renderjsMatch) {
+    compiledVue += `\n<!-- #ifdef APP-PLUS -->\n${renderjsMatch}\n<!-- #endif -->\n\n`
   }
 
   // style

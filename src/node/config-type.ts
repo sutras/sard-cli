@@ -69,6 +69,10 @@ export interface UserConfig {
      * 组件类型所在的 readme 文件
      */
     mapReadme?: Record<string, string>
+    /**
+     * 生成的 vue 类型文件包含多个默认导出时，移除一个
+     */
+    multiDefaultExport?: string[]
   }
   /**
    * 定义在 .md 文件 @code 规则中的路径别名

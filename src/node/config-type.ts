@@ -166,9 +166,32 @@ export interface UserConfig {
      */
     notFoundPath?: string
     /**
+     * 许可证
+     */
+    license?:
+      | string
+      | {
+          text: string
+          link: string
+        }
+    /**
      * 页面底部的版权信息
      */
-    copyright?: string
+    copyright?:
+      | string
+      | {
+          text: string
+          link: string
+        }
+    /**
+     * ICP备案号
+     */
+    icp?:
+      | string
+      | {
+          text: string
+          link: string
+        }
     /**
      * 头部导航链接
      */

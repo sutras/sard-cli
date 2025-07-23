@@ -1,6 +1,31 @@
 <template>
   <div class="sc-layout-footer">
-    <div>{{ site.copyright }}</div>
+    <div class="sc-layout-link-list">
+      <template v-if="site.license">
+        <a v-if="typeof site.license === 'string'">
+          {{ site.license }}
+        </a>
+        <a v-else :href="site.license.link" target="_blank" rel="noreferrer">
+          {{ site.license.text }}
+        </a>
+      </template>
+      <template v-if="site.copyright">
+        <a v-if="typeof site.copyright === 'string'">
+          {{ site.copyright }}
+        </a>
+        <a v-else :href="site.copyright.link" target="_blank" rel="noreferrer">
+          {{ site.copyright.text }}
+        </a>
+      </template>
+      <template v-if="site.icp">
+        <a v-if="typeof site.icp === 'string'">
+          {{ site.icp }}
+        </a>
+        <a v-else :href="site.icp.link" target="_blank" rel="noreferrer">
+          {{ site.icp.text }}
+        </a>
+      </template>
+    </div>
     <div v-if="mainRepository" class="sc-layout-link-list">
       <a :href="mainRepository.url" target="_blank" rel="noreferrer">
         {{ mainRepository.name }}
@@ -46,6 +71,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  column-gap: 24px;
   margin-top: 50px;
   margin-bottom: 20px;
   padding: 0 24px;
@@ -62,7 +88,7 @@ export default defineComponent({
   a {
     text-decoration: none;
     color: var(--sc-tertiary-color);
-    &:hover {
+    &[href]:hover {
       color: var(--sc-blue);
     }
   }
@@ -71,8 +97,8 @@ export default defineComponent({
 .sc-layout-link-list {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 24px;
-  gap: 8px;
+  justify-content: center;
+  column-gap: 8px;
 
   a {
     display: inline-flex;

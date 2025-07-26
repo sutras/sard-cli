@@ -2,6 +2,14 @@ import type MarkdownIt from 'markdown-it'
 import { Token } from 'markdown-it/index.js'
 
 function getTokensText(tokens: Token[]) {
+  const index = tokens.findIndex(
+    (token) => token.type === 'html_inline' && token.content === '<sup>',
+  )
+  if (index !== -1) {
+    tokens = tokens.slice()
+    tokens.splice(index, 3)
+  }
+
   return tokens
     .filter((t) => ['text', 'code_inline'].includes(t.type))
     .map((t) => t.content)

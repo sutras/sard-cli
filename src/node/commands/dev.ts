@@ -49,7 +49,7 @@ export async function dev() {
           logUrl('Network', urls[1])
 
           // eslint-disable-next-line no-control-regex
-          sard.url = urls[1].replace(/\x1b\[\d+m/g, '')
+          sard.url = urls[0]?.replace(/\x1b\[\d+m/g, '')
 
           if (!start) {
             start = true
